@@ -15,6 +15,8 @@ class GameScraperJob < ApplicationJob
           logger.info "away team nickname: #{fixture['awayTeam']['nickName']}"
           away_team = Team.find_by(name: fixture['awayTeam']['nickName'])
 
+          next unless fixture['matchState'] == 'FullTime'
+
           game = Game.find_or_create_by({
             round: round,
             title: "#{home_team.slug}-v-#{away_team.slug}"
@@ -23,13 +25,15 @@ class GameScraperJob < ApplicationJob
           game_home_team = GameTeam.find_or_create_by({
             game_id: game.id,
             team_id: home_team.id,
-            side: 'home'
+            side: 'home',
+            score: fixture['homeTeam']['score']
           })
 
           game_away_team = GameTeam.find_or_create_by({
             game_id: game.id,
             team_id: away_team.id,
-            side: 'away'
+            side: 'away',
+            score: fixture['awayTeam']['score']
           })
         end
       end
