@@ -10,9 +10,6 @@ class GameScraperJob < ApplicationJob
         if fixture['roundTitle'] == 'GrandFinal'
           logger.info "grand final: #{fixture}"
         else
-          logger.info "round is: #{round}"
-          logger.info "#{fixture['roundTitle']}: #{fixture}"
-
           logger.info "home team nickname: #{fixture['homeTeam']['nickName']}"
           home_team = Team.find_by(name: fixture['homeTeam']['nickName'])
           logger.info "away team nickname: #{fixture['awayTeam']['nickName']}"
