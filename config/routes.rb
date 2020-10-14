@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'games', to: 'games#list'
 
   get 'teams/:id', to: 'teams#show'
+  get 'teams/:name', to: 'teams#show'
   get 'teams', to: 'teams#list'
 
   get 'players/:id', to: 'players#show'

@@ -1,9 +1,10 @@
 class Team < ApplicationRecord
   has_many :players
   has_many :games, through: :game_teams
+  before_save :add_slug
 
-  def slug
-    self.name.downcase.gsub(" ", "-")
+  def add_slug
+    self.slug = self.name.downcase.gsub(" ", "-")
   end
 
   def stats

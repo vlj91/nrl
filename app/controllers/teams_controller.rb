@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   def show
-    @team = Team.find_by(id: params[:id])
+    @team = Team.where(id: params[:id]).or(Team.where(slug: params[:id])).first
     render json: @team
   end
 
