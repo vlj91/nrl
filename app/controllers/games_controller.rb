@@ -1,11 +1,18 @@
 class GamesController < ApplicationController
   def show
-    @game = Game.find_by(params[:id])
-    render :json => @game, :except => [:id, :created_at, :updated_at, :scraped]
+
+    if params[:id]
+      @game = Game.find_by(id: params[:id])
+    elsif params[:round] && params[:title]
+      id = Game.where(round: params[:round]).select { |i| i.title == params[:title] }.first.id
+      @game = Game.find_by(id: id)
+    end
+
+    render json: @game
   end
 
   def list
     @games = Game.all
-    render :json => @games, :except => [:id, :created_at, :updated_at, :scraped]
+    render json: @games
   end
 end

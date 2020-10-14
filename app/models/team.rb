@@ -8,10 +8,12 @@ class Team < ApplicationRecord
 
   def stats
     {
+      total_games: self.wins.length + self.drawn.length + self.lost.length,
       wins: self.wins.length,
       drawn: self.drawn.length,
       lost: self.lost.length,
-      tries_per_game: self.tries_per_game
+      tries_per_game: self.tries_per_game,
+      first_try_scorer: self.first_try_scorer
     }
   end
 

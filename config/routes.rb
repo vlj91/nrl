@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'game/events', to: 'game_events#list'
 
   get 'games/:id', to: 'games#show'
+  get 'games/:round/:title', to: 'games#show'
   get 'games', to: 'games#list'
 
   get 'teams/:id', to: 'teams#show'

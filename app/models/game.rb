@@ -2,6 +2,15 @@ class Game < ApplicationRecord
   has_many :game_teams
   has_many :game_events
 
+  def stats
+    {
+      winner: Team.find_by(id: home_team.team_id).name,
+      highest_scoring_half: self.highest_scoring_half,
+      first_try_scorer_team: Team.find_by(id: self.first_try_scorer_team_id).name,
+      first_try_scorer_player: Player.find_by(id: self.first_try_scorer_player_id).last_name
+    }
+  end
+
   def home_team
     GameTeam.find_by(game_id: self.id, side: 'home')    
   end
@@ -42,5 +51,9 @@ class Game < ApplicationRecord
 
   def first_try_scorer_team_id
     GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.team_id
+  end
+
+  def first_try_scorer_player_id
+    GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.player_id
   end
 end
