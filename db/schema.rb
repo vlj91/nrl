@@ -12,14 +12,17 @@
 
 ActiveRecord::Schema.define(version: 2020_10_14_223935) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "game_events", force: :cascade do |t|
-    t.integer "game_id", null: false
+    t.bigint "game_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "event_type"
     t.string "name"
-    t.integer "player_id", null: false
-    t.integer "team_id", null: false
+    t.bigint "player_id", null: false
+    t.bigint "team_id", null: false
     t.text "description"
     t.integer "game_seconds"
     t.index ["game_id"], name: "index_game_events_on_game_id"
@@ -28,8 +31,8 @@ ActiveRecord::Schema.define(version: 2020_10_14_223935) do
   end
 
   create_table "game_teams", force: :cascade do |t|
-    t.integer "game_id", null: false
-    t.integer "team_id", null: false
+    t.bigint "game_id", null: false
+    t.bigint "team_id", null: false
     t.string "side"
     t.integer "score"
     t.datetime "created_at", precision: 6, null: false
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 2020_10_14_223935) do
   create_table "players", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.integer "team_id", null: false
+    t.bigint "team_id", null: false
     t.string "nrl_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
