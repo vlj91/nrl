@@ -9,6 +9,10 @@ class Player < ApplicationRecord
     }
   end
 
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
+
   def team_name
     Team.find_by(id: self.team_id).name
   end
@@ -24,6 +28,6 @@ class Player < ApplicationRecord
   end
 
   def first_try_scorer
-    Game.all.select { |i| i.first_try_scorer_player_id == self.id }
+    Game.all.select { |i| i.first_try_scorer_player_id == self.id }.length
   end
 end

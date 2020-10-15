@@ -7,7 +7,10 @@ class Game < ApplicationRecord
       winner: Team.find_by(id: home_team.team_id).name,
       highest_scoring_half: self.highest_scoring_half,
       first_try_scorer_team: Team.find_by(id: self.first_try_scorer_team_id).name,
-      first_try_scorer_player: Player.find_by(id: self.first_try_scorer_player_id).last_name
+      first_try_scorer_player: Player.find_by(id: self.first_try_scorer_player_id).full_name,
+      first_try_minute: self.first_try_minute,
+      first_half_tries: self.first_half_tries,
+      second_half_tries: self.second_half_tries
     }
   end
 
@@ -55,5 +58,17 @@ class Game < ApplicationRecord
 
   def first_try_scorer_player_id
     GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.player_id
+  end
+
+  def first_try_minute
+    GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.game_seconds / 60
+  end
+
+  def first_half_tries
+    GameEvent.where("game_id = :game_id AND event_type = :event_type AND game_seconds <= :game_seconds", {:game_id => self.id, :event_type => 'Try', :game_seconds => 2400}).length
+  end
+
+  def second_half_tries
+    GameEvent.where("game_id = :game_id AND event_type = :event_type AND game_seconds >= :game_seconds", {:game_id => self.id, :event_type => 'Try', :game_seconds => 2401}).length
   end
 end
