@@ -10,7 +10,8 @@ class Game < ApplicationRecord
       first_try_scorer_player: Player.find_by(id: self.first_try_scorer_player_id).full_name,
       first_try_minute: self.first_try_minute,
       first_half_tries: self.first_half_tries,
-      second_half_tries: self.second_half_tries
+      second_half_tries: self.second_half_tries,
+      winning_margin: self.winning_margin
     }
   end
 
@@ -22,9 +23,23 @@ class Game < ApplicationRecord
     GameTeam.find_by(game_id: self.id, side: 'away')
   end
 
+  def home_team_score
+    home_team.score
+  end
+
+  def away_team_score
+    away_team.score
+  end
+
+  def winning_margin
+    if home_team_score >= away_team_score
+      home_team_score - away_team_score
+    elsif home_team_score <= away_team_score
+      away_team_score - home_team_score
+    end
+  end
+
   def winner_id
-    logger.info "home #{home_team.score} v #{away_team.score} away"
-  
     if home_team.score == away_team.score
       return nil
     elsif home_team.score > away_team.score
@@ -52,16 +67,20 @@ class Game < ApplicationRecord
     first_half_tries.length > second_half_tries.length ? 1 : 2
   end
 
+  def first_try_scorer
+    GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first
+  end
+
   def first_try_scorer_team_id
-    GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.team_id
+    first_try_scorer.team_id
   end
 
   def first_try_scorer_player_id
-    GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.player_id
+    first_try_scorer.player_id
   end
 
   def first_try_minute
-    GameEvent.where(game_id: self.id, event_type: 'Try').order(:game_seconds).first.game_seconds / 60
+    first_try_scorer.game_seconds / 60
   end
 
   def first_half_tries

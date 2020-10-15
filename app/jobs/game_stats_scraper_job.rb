@@ -69,9 +69,6 @@ class GameStatsScraperJob < ApplicationJob
         }
 
         game_event = GameEvent.find_or_create_by(game_event_params)
-
-        logger.info game_event_params
-
         if game_event.nil?
           logger.error "Game event does not exist or could not be created"
         end

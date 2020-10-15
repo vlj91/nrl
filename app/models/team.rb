@@ -7,21 +7,27 @@ class Team < ApplicationRecord
     self.slug = self.name.downcase.gsub(" ", "-")
   end
 
+  def played
+    {
+      wins: self.wins.length,
+      drawn: self.drawn.length,
+      lost: self.lost.length
+    }
+  end
+
   def stats
     {
-      game_averages: {
-        tries_per_game: self.tries_per_game,
-        total_points_per_game: self.average_total_points_per_game,
-        points_per_game: self.average_points_per_game
-      },
-      game_counts: {
-        number_of_games_with_first_game_try: self.first_try_scorer
-      },
-      played: {
-        wins: self.wins.length,
-        drawn: self.drawn.length,
-        lost: self.lost.length
-      }
+      average_tries_per_game: self.average_tries_per_game,
+      average_total_points_per_game: self.average_total_points_per_game,
+      average_team_points_per_game: self.average_points_per_game,
+      number_first_game_tries: self.number_first_game_tries
+    }
+  end
+
+  def info
+    {
+      played: played,
+      stats: stats
     }
   end
 
@@ -41,7 +47,7 @@ class Team < ApplicationRecord
     Game.where(id: games).select { |i| i.loser_id == self.id }
   end
 
-  def tries_per_game
+  def average_tries_per_game
     tries = GameEvent.where(team_id: self.id, event_type: 'Try').count
 
     return tries / self.games.length
@@ -71,8 +77,16 @@ class Team < ApplicationRecord
     all_games_points.sum.fdiv(all_games_points.size).round(0)
   end
 
-  def first_try_scorer
+  def number_first_game_tries
     all_first_try_scorer = Game.where(id: games).map(&:first_try_scorer_team_id)
     return all_first_try_scorer.count(self.id)
+  end
+
+  def top_player_first_try_scorer
+    self.players.sort_by { |i| i.first_try_scorer }.reverse.first 
+  end
+
+  def average_win_margin
+    Games.where(id: [games], winner_id: self.id)
   end
 end
