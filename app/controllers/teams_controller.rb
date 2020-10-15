@@ -5,7 +5,11 @@ class TeamsController < ApplicationController
   end
 
   def list
-    @teams = Team.all
+    if params[:compare]
+      @teams = Team.where(slug: [params[:compare].split(',')])
+    else
+      @teams = Team.all
+    end
     render json: @teams
   end
 end

@@ -1,3 +1,3 @@
 class TeamSerializer < ActiveModel::Serializer
-  attributes :slug, :name, :stats
+  attributes :name, :stats
 end
