@@ -20,7 +20,9 @@ class Team < ApplicationRecord
       average_tries_per_game: self.average_tries_per_game,
       average_total_points_per_game: self.average_total_points_per_game,
       average_team_points_per_game: self.average_points_per_game,
-      number_first_game_tries: self.number_first_game_tries
+      average_errors_per_game: self.average_errors_per_game,
+      number_first_game_tries: self.number_first_game_tries,
+      total_errors: self.total_errors
     }
   end
 
@@ -32,19 +34,23 @@ class Team < ApplicationRecord
   end
 
   def games
-    GameTeam.where(team_id: self.id).map(&:game_id)
+    @games ||= GameTeam.where(team_id: self.id).map(&:game_id)
+  end
+
+  def team_games
+    @team_games ||= Game.where(id: games)
   end
 
   def wins
-    Game.where(id: games).select { |i| i.winner_id == self.id }
+    team_games.select { |i| i.winner_id == self.id }
   end
 
   def drawn
-    Game.where(id: games).select { |i| i.winner_id == i.loser_id }
+    team_games.select { |i| i.winner_id == i.loser_id }
   end
 
   def lost
-    Game.where(id: games).select { |i| i.loser_id == self.id }
+    team_games.select { |i| i.loser_id == self.id }
   end
 
   def average_tries_per_game
@@ -54,7 +60,6 @@ class Team < ApplicationRecord
   end
 
   def average_total_points_per_game
-    games = GameTeam.where(team_id: self.id).map(&:game_id)
     all_games_total_points = []
 
     games.each do |game|
@@ -66,7 +71,6 @@ class Team < ApplicationRecord
   end
 
   def average_points_per_game
-    games = GameTeam.where(team_id: self.id).map(&:game_id)
     all_games_points = []
 
     games.each do |game|
@@ -88,5 +92,23 @@ class Team < ApplicationRecord
 
   def average_win_margin
     Games.where(id: [games], winner_id: self.id)
+  end
+
+  def errors
+    @errors ||= GameEvent.where(team_id: self.id, game_id: team_games, event_type: 'Error')
+  end
+
+  def average_errors_per_game
+    game_errors = []
+
+    team_games.each do |game|
+      game_errors.push(game.game_events.where(team_id: self.id, event_type: 'Error').count)
+    end
+
+    return game_errors.sum.fdiv(game_errors.size).round(0)
+  end
+
+  def total_errors
+    errors.count
   end
 end

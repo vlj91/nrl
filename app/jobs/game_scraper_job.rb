@@ -4,7 +4,7 @@ class GameScraperJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    (1..22).each do |round|
+    (1..23).each do |round|
       doc = page_data("#{DRAW_BASE_URL}&round=#{round}", "div#vue-draw")
       doc['fixtures'].each do |fixture|
         if fixture['roundTitle'] == 'GrandFinal'

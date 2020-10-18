@@ -5,9 +5,12 @@ class GameStatsScraperJob < ApplicationJob
     'Error',
     'Try',
     'Goal',
+    'GoalMissed',
+    'FortyTwenty',
     'KickBomb',
     'Penalty',
     'LineBreak',
+    'SinBin'
   ]
 
   def game_url(round, home_team, away_team)
@@ -56,6 +59,7 @@ class GameStatsScraperJob < ApplicationJob
 
       doc['timeline'].each do |event|
         logger.info event['type']
+        GameEventType.find_or_create_by(name: event['type'])
         next unless VALID_EVENT_TYPES.include? event['type']
 
         game_event_params = {

@@ -1,4 +1,5 @@
 class Game < ApplicationRecord
+  belongs_to :game
   has_many :game_teams
   has_many :game_events
 
@@ -81,6 +82,10 @@ class Game < ApplicationRecord
 
   def first_try_minute
     first_try_scorer.game_seconds / 60
+  end
+
+  def total_errors
+    GameEvent.where(id: self.id, event_type: 'Error').count
   end
 
   def first_half_tries
