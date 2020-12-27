@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_093735) do
+ActiveRecord::Schema.define(version: 2020_12_27_221752) do
 
   create_table "game_events", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 2020_12_27_093735) do
 
   create_table "games", force: :cascade do |t|
     t.string "date"
-    t.string "result"
     t.integer "started_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
