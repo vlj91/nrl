@@ -63,6 +63,8 @@ GEM
     concurrent-ruby (1.1.7)
     crass (1.0.6)
     erubi (1.10.0)
+    faker (2.15.1)
+      i18n (>= 1.6, < 2)
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -149,6 +151,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
+  faker (~> 2.15)
   listen (~> 3.2)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.3)
@@ -161,4 +164,4 @@ RUBY VERSION
    ruby 2.6.0p-1
 
 BUNDLED WITH
-   2.0.1
+   2.0.2
