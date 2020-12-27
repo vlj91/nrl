@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_053755) do
+ActiveRecord::Schema.define(version: 2020_12_27_072933) do
 
   create_table "game_events", force: :cascade do |t|
     t.string "type"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 2020_12_27_053755) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "nickname"
+    t.integer "nrl_id"
   end
 
   add_foreign_key "game_teams", "games"

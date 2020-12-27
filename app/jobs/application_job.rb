@@ -1,7 +1,10 @@
 class ApplicationJob < ActiveJob::Base
-  # Automatically retry jobs that encountered a deadlock
-  # retry_on ActiveRecord::Deadlocked
+  require 'nokogiri' # all jobs do some sort of scraping
+  require 'open-uri'
+  require 'json'
 
-  # Most jobs are safe to ignore if the underlying records are no longer available
-  # discard_on ActiveJob::DeserializationError
+  def page_data(url, css_class)
+    doc = Nokogiri::HTML(URI.open(url))
+    JSON.parse(doc.css(css_class)[0]['q-data'])
+  end
 end
