@@ -6,8 +6,10 @@ class GameScraperJob < ApplicationJob
   def perform(*args)
 
     (1..23).each do |round|
+      logger.info "Scraping games in round #{round}"
       doc = page_data("#{DRAW_BASE_URL}&round=#{round}", "div#vue-draw")
 
+      logger.info "Scraping #{doc['fixtures'].length} games"
       for fixture in doc['fixtures'] do
         next if fixture['roundTitle'] == 'GrandFinal' # not interested
         home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
@@ -15,6 +17,7 @@ class GameScraperJob < ApplicationJob
 
         game = Game.find_or_create_by({
           round: round,
+          title: "#{home_team.name}-v-#{away_team.name}"
         })
 
         game_home_team = GameTeam.find_or_create_by({

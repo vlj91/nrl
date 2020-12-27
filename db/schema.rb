@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_082657) do
+ActiveRecord::Schema.define(version: 2020_12_27_093735) do
 
   create_table "game_events", force: :cascade do |t|
-    t.string "type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "event_type"
+    t.string "name"
+    t.integer "game_id", null: false
+    t.integer "player_id", null: false
+    t.integer "team_id", null: false
+    t.text "description"
+    t.integer "game_seconds"
+    t.index ["game_id"], name: "index_game_events_on_game_id"
+    t.index ["player_id"], name: "index_game_events_on_player_id"
+    t.index ["team_id"], name: "index_game_events_on_team_id"
   end
 
   create_table "game_teams", force: :cascade do |t|
@@ -35,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_082657) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "round"
+    t.string "title"
   end
 
   create_table "players", force: :cascade do |t|
@@ -43,6 +53,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_082657) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "team_id", null: false
+    t.integer "nrl_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
@@ -54,6 +65,9 @@ ActiveRecord::Schema.define(version: 2020_12_27_082657) do
     t.integer "nrl_id"
   end
 
+  add_foreign_key "game_events", "games"
+  add_foreign_key "game_events", "players"
+  add_foreign_key "game_events", "teams"
   add_foreign_key "game_teams", "games"
   add_foreign_key "game_teams", "teams"
   add_foreign_key "players", "teams"
