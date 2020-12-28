@@ -1,24 +1,8 @@
-# README
+## Pulling initial data
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Run the jobs in order to scrape the initial data:
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. `TeamScraperJob`
+2. `PlayerScraperJob`
+3. `GameScraperJob`
+4. `GameStatsScraperJob`
