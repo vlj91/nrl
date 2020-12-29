@@ -1,6 +1,7 @@
 class Game < ApplicationRecord
   has_many :game_teams
   has_many :game_events
+  has_many :game_stats
 
   def away_team
     GameTeam.find_by(game_id: self.id, side: 'away')
