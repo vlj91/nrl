@@ -42,14 +42,4 @@ class Game < ApplicationRecord
   def away_team_points
     ((away_team_tries.count * 4) + (away_team_goals.count * 2))
   end
-
-  def result
-    if home_team_points > away_team_points
-      return 'home'
-    elsif away_team_points > home_team_points
-      return 'away'
-    elsif home_team_points == away_team_points
-      return 'draw'
-    end
-  end
 end
