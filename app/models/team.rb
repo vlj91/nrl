@@ -9,6 +9,34 @@ class Team < ApplicationRecord
   end
 
   def avg_tries_per_game
-    TeamState.find_by(team_id: self.id, name: 'avg_tries_per_game').value
+    TeamStat.find_by(team_id: self.id, name: 'avg_tries_per_game').value
+  end
+
+  def avg_goals_per_game
+    TeamStat.find_by(team_id: self.id, name: 'avg_goals_per_game').value
+  end
+
+  def avg_line_breaks_per_game
+    TeamStat.find_by(team_id: self.id, name: 'avg_line_breaks_per_game').value
+  end
+
+  def total_tries
+    TeamStat.find_by(team_id: self.id, name: 'total_tries').value
+  end
+
+  def total_goals
+    TeamStat.find_by(team_id: self.id, name: 'total_goals').value
+  end
+
+  def total_errors
+    TeamStat.find_by(team_id: self.id, name: 'total_errors').value
+  end
+
+  def total_penalties
+    TeamStat.find_by(team_id: self.id, name: 'total_penalties').value
+  end
+
+  def total_line_breaks
+    TeamStat.find_by(team_id: self.id, name: 'total_line_breaks').value
   end
 end
