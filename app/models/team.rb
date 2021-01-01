@@ -39,4 +39,17 @@ class Team < ApplicationRecord
   def total_line_breaks
     TeamStat.find_by(team_id: self.id, name: 'total_line_breaks').value
   end
+
+  def wins
+    wins = 0
+    gt = GameTeam.where(team_id: self.id)
+
+    for g in gt do
+      game = Game.find_by(game_id: gt.game_id)
+
+      wins += 1 if game.result == gt.side
+    end
+
+    wins
+  end
 end
