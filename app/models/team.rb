@@ -40,6 +40,18 @@ class Team < ApplicationRecord
     TeamStat.find_by(team_id: self.id, name: 'total_line_breaks').value
   end
 
+  def points_for
+  end
+
+  def points_against
+  end
+
+  def avg_win_margin
+  end
+
+  def avg_loss_margin
+  end
+
   def home_game_wins
     home_wins = 0
     gt = GameTeam.where(team_id: self.id, side: 'home')
