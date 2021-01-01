@@ -4,12 +4,11 @@ class ResultModel < Eps::Base
 
     # train
     data = games.map { |v| features(v) }
-    model = Eps::Model.new(data, target: :result)
+    store = Model.where(key: 'price').first_or_initialize
+    model = Eps::Model.new(data, target: :result, split: {validation_size: 0.50})
+    store.update(data: model.to_pmml)
 
-    # save to file
-    File.write(model_file, model.to_pmml)
-
-    # ensure reloads from file
+    # ensure reloads from db
     @model = nil
   end
 
@@ -34,12 +33,17 @@ class ResultModel < Eps::Base
       'away_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_line_breaks_per_game').value,
       'result': game.result,
       'month': Time.parse(game.date).strftime("%b"),
-      'day': Time.parse(game.date).strftime("%a")
+      'day': Time.parse(game.date).strftime("%a"),
+      'stadium': game.stadium,
+      'city': game.city
     }
   end
 
   def model
-    @model ||= Eps::Model.load_pmml(File.read(model_file))
+    @model ||= begin
+        data = Model.find_by({key: 'price'}).data
+        Eps::Model.load_pmml(data)
+    end
   end
 
   def model_file

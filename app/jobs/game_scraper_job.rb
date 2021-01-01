@@ -11,6 +11,7 @@ class GameScraperJob < ApplicationJob
       logger.info "Scraping #{doc['fixtures'].length} games"
       for fixture in doc['fixtures'] do
         next if fixture['roundTitle'] == 'GrandFinal' # not interested
+        logger.info fixture.keys
         date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s)
         home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
         away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
@@ -18,7 +19,9 @@ class GameScraperJob < ApplicationJob
         game = Game.find_or_create_by({
           date: date,
           round: round,
-          title: "#{home_team.name}-v-#{away_team.name}"
+          title: "#{home_team.name}-v-#{away_team.name}",
+          stadium: fixture['venue'],
+          city: fixture['venueCity']
         })
 
         game_home_team = GameTeam.find_or_create_by({
