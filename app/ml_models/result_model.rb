@@ -1,54 +1,50 @@
 class ResultModel < Eps::Base
   def build
-    games = Game.all.where(predicted_result: nil)
-    processed_games = []
+    games = Game.all
 
-    for game in games do
-      processed_game = game.as_json
+    # train
+    data = games.map { |v| features(v) }
+    model = Eps::Model.new(data, target: :result, split: :date)
+    puts model.summary
 
-      for game_team in game.game_teams do
-        processed_game["#{game_team.side}_team_avg_goals_per_game"] = TeamStat.find_by({
-          name: 'avg_goals_per_game',
-          team_id: game_team.team_id
-        }).value
+    # save to file
+    File.write(model_file, model.to_pmml)
 
-        processed_game["#{game_team.side}_team_avg_tries_per_game"] = TeamStat.find_by({
-          name: 'avg_tries_per_game',
-          team_id: game_team.team_id
-        }).value
-
-        processed_game["#{game_team.side}_team_avg_errors_per_game"] = TeamStat.find_by({
-          name: 'avg_errors_per_game',
-          team_id: game_team.team_id
-        }).value
-
-        processed_game["#{game_team.side}_team_avg_line_breaks_per_game"] = TeamStat.find_by({
-          name: 'avg_line_breaks_per_game',
-          team_id: game_team.team_id
-        }).value
-
-        processed_game.delete("id")
-        processed_game.delete("date")
-        processed_game.delete("created_at")
-        processed_game.delete("updated_at")
-        processed_game.delete("started_at")
-      end
-
-      processed_games.push(processed_game)
-    end
-
-    puts processed_games.first
-
-    model = Eps::Model.new(processed_games, target: :result)
-
-    return model
+    # ensure reloads from file
+    @model = nil
   end
 
   def predict(game)
     model.predict(features(game))
   end
 
+  def metrics
+    games = Game.where.not(predicted_result: nil)
+    actual = games.map(&:result)
+    predicted = games.map(&:predicted_result)
+
+    Eps.metrics(actual, predicted)
+  end
+
   private
+
+  def features(game)
+    home = GameTeam.find_by(game_id: game.id, side: 'home')
+    away = GameTeam.find_by(game_id: game.id, side: 'away')
+
+    {
+      'home_team_avg_goals_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_goals_per_game').value,
+      'away_team_avg_goals_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_goals_per_game').value,
+      'home_team_avg_tries_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_tries_per_game').value,
+      'away_team_avg_tries_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_tries_per_game').value,
+      'home_team_avg_errors_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_errors_per_game').value,
+      'away_team_avg_errors_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_errors_per_game').value,
+      'date': Time.parse(game.date),
+      'day': Time.parse(game.date).strftime("%A"),
+      'month': Time.parse(game.date).strftime("%b"),
+      'result': game.result
+    }
+  end
 
   def model
     @model ||= Eps::Model.load_pmml(File.read(model_file))

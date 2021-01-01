@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_30_062747) do
+ActiveRecord::Schema.define(version: 2021_01_01_041432) do
 
   create_table "game_events", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -57,6 +57,14 @@ ActiveRecord::Schema.define(version: 2020_12_30_062747) do
     t.string "title"
     t.string "result"
     t.string "predicted_result"
+  end
+
+  create_table "models", force: :cascade do |t|
+    t.string "key"
+    t.text "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_models_on_key", unique: true
   end
 
   create_table "player_stats", force: :cascade do |t|
