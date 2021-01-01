@@ -4,8 +4,7 @@ class ResultModel < Eps::Base
 
     # train
     data = games.map { |v| features(v) }
-    model = Eps::Model.new(data, target: :result, split: :date)
-    puts model.summary
+    model = Eps::Model.new(data, target: :result)
 
     # save to file
     File.write(model_file, model.to_pmml)
@@ -16,14 +15,6 @@ class ResultModel < Eps::Base
 
   def predict(game)
     model.predict(features(game))
-  end
-
-  def metrics
-    games = Game.where.not(predicted_result: nil)
-    actual = games.map(&:result)
-    predicted = games.map(&:predicted_result)
-
-    Eps.metrics(actual, predicted)
   end
 
   private
@@ -39,10 +30,11 @@ class ResultModel < Eps::Base
       'away_team_avg_tries_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_tries_per_game').value,
       'home_team_avg_errors_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_errors_per_game').value,
       'away_team_avg_errors_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_errors_per_game').value,
-      'date': Time.parse(game.date),
-      'day': Time.parse(game.date).strftime("%A"),
+      'home_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_line_breaks_per_game').value,
+      'away_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_line_breaks_per_game').value,
+      'result': game.result,
       'month': Time.parse(game.date).strftime("%b"),
-      'result': game.result
+      'day': Time.parse(game.date).strftime("%a")
     }
   end
 
