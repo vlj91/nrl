@@ -45,7 +45,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
     games = Game.where(id: game_ids)
     for game in games do
-      goals.push(game.game_events.where(team_id: team.id, event_type: 'Penalty').count)
+      goals.push(game.game_events.where(team_id: team.id, event_type: 'Goal').count)
     end
 
     team_stat.value = goals.sum.fdiv(goals.size).round(0)
@@ -66,6 +66,24 @@ class TeamStatsUpdaterJob < ApplicationJob
     end
 
     team_stat.value = line_breaks.sum.fdiv(line_breaks.size).round(0)
+    team_stat.save!
+  end
+
+  def update_avg_penalties_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_penalties_per_game'
+    })
+
+    penalties = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids)
+
+    for game in games do
+      penalties.push(game.game_events.where(team_id: team.id, event_type: 'Penalty').count)
+    end
+
+    team_stat.value = penalties.sum.fdiv(penalties.size).round(0)
     team_stat.save!
   end
 
@@ -125,6 +143,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_tries_per_game!(team)
       update_avg_goals_per_game!(team)
       update_avg_line_breaks_per_game!(team)
+      update_avg_penalties_per_game!(team)
       update_total_tries!(team)
       update_total_errors!(team)
       update_total_penalties!(team)

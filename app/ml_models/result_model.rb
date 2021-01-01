@@ -8,6 +8,8 @@ class ResultModel < Eps::Base
     model = Eps::Model.new(data, target: :result, split: {validation_size: 0.50})
     store.update(data: model.to_pmml)
 
+    print model.summary
+
     # ensure reloads from db
     @model = nil
   end
@@ -31,6 +33,8 @@ class ResultModel < Eps::Base
       'away_team_avg_errors_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_errors_per_game').value,
       'home_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_line_breaks_per_game').value,
       'away_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_line_breaks_per_game').value,
+      'home_team_avg_penalties_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_penalties_per_game').value,
+      'away_team_avg_penalties_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_penalties_per_game').value,
       'result': game.result,
       'month': Time.parse(game.date).strftime("%b"),
       'day': Time.parse(game.date).strftime("%a"),
