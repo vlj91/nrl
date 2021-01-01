@@ -1,22 +1,47 @@
 class ResultModel < Eps::Base
   def build
-    games = Game.all.as_json
+    games = Game.all.where(predicted_result: nil)
+    processed_games = []
 
     for game in games do
-      for team in GameTeam.where(game_id: game.id) do
-        for team_stat in TeamStat.where(team_id: team.id) do
-        end
+      processed_game = game.as_json
+
+      for game_team in game.game_teams do
+        processed_game["#{game_team.side}_team_avg_goals_per_game"] = TeamStat.find_by({
+          name: 'avg_goals_per_game',
+          team_id: game_team.team_id
+        }).value
+
+        processed_game["#{game_team.side}_team_avg_tries_per_game"] = TeamStat.find_by({
+          name: 'avg_tries_per_game',
+          team_id: game_team.team_id
+        }).value
+
+        processed_game["#{game_team.side}_team_avg_errors_per_game"] = TeamStat.find_by({
+          name: 'avg_errors_per_game',
+          team_id: game_team.team_id
+        }).value
+
+        processed_game["#{game_team.side}_team_avg_line_breaks_per_game"] = TeamStat.find_by({
+          name: 'avg_line_breaks_per_game',
+          team_id: game_team.team_id
+        }).value
+
+        processed_game.delete("id")
+        processed_game.delete("date")
+        processed_game.delete("created_at")
+        processed_game.delete("updated_at")
+        processed_game.delete("started_at")
       end
+
+      processed_games.push(processed_game)
     end
 
-    for game in games do
-      home_game_team = GameTeam.where(game_id: game.id, side: 'home')
-    end
+    puts processed_games.first
 
-    data = games.map { |v| features(v) }
-    model = Eps::Model.new(data, target: :result)
-    File.write(model_file, model.to_pmml)
-    @model = nil
+    model = Eps::Model.new(processed_games, target: :result)
+
+    return model
   end
 
   def predict(game)
@@ -25,15 +50,11 @@ class ResultModel < Eps::Base
 
   private
 
-  def features(game)
-    {}
-  end
-
   def model
     @model ||= Eps::Model.load_pmml(File.read(model_file))
   end
 
   def model_file
-    File.join(__dir__, 'price_model.pmml')
+    File.join(__dir__, 'result_model.pmml')
   end
 end
