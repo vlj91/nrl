@@ -1,6 +1,13 @@
 class ResultModel < Eps::Base
   def build
-    games = Game.all
+    games = Game.all.as_json
+
+    for game in games do
+      for team in GameTeam.where(game_id: game.id) do
+        for team_stat in TeamStat.where(team_id: team.id) do
+        end
+      end
+    end
 
     for game in games do
       home_game_team = GameTeam.where(game_id: game.id, side: 'home')

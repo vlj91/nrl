@@ -1,44 +1,28 @@
 class GameStatsUpdaterJob < ApplicationJob
   queue_as :default
 
-  def update_team_tries!(game, side)
-    team = GameTeam.find_by({
-      game_id: game.id,
-      side: side 
-    })
-
-    stat = GameStat.find_or_create_by({
-      name: 'tries',
-      team_id: team.id,
-      game_id: game.id
-    })
-
-    stat.value = GameEvent.where(game_id: game.id, team_id: team.id, event_type: 'Try').count
-    stat.save!
-  end
-
-  def update_team_goals!(game, side)
-    team = GameTeam.find_by({
+  def update_team_stat!(game, side, stat, event_type)
+    game_team = GameTeam.find_by({
       game_id: game.id,
       side: side
     })
 
     stat = GameStat.find_or_create_by({
-      name: 'goals',
-      team_id: team.id,
-      game_id: game.id
+      name: stat,
+      game_id: game.id,
+      team_id: game_team.team_id
     })
 
-    stat.value = GameEvent.where(game_id: game.id, team_id: team.id, event_type: 'Goal').count
+    stat.value = game.game_events.where(team_id: game_team.team_id, event_type: event_type).count
     stat.save!
   end
 
   def perform(*args)
     for game in Game.all do
-      update_team_tries!(game, 'home')
-      update_team_tries!(game, 'away')
-      update_team_goals!(game, 'home')
-      update_team_goals!(game, 'away')
+      update_team_stat!(game, 'home', 'tries', 'Try')
+      update_team_stat!(game, 'away', 'tries', 'Try')
+      update_team_stat!(game, 'home', 'goals', 'Goal')
+      update_team_stat!(game, 'away', 'goals', 'Goal')
     end
   end
 end
