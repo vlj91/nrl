@@ -47,6 +47,7 @@ class Team < ApplicationRecord
   end
 
   def avg_win_margin
+    TeamStat.find_by(team_id: self.id, name: 'avg_win_margin').value
   end
 
   def avg_loss_margin

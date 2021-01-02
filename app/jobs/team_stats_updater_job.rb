@@ -1,6 +1,60 @@
 class TeamStatsUpdaterJob < ApplicationJob
   queue_as :default
 
+  def update_avg_win_margin!(team)
+    win_game_margins = []
+
+    gt = GameTeam.where(team_id: team.id)
+    for g in gt do
+      game = Game.find(g.game_id)
+
+      if game.result == g.side
+        if g.side == 'home'
+          win_margin = game.home_team_points - game.away_team_points
+        elsif g.side == 'away'
+          win_margin = game.away_team_points - game.home_team_points
+        end
+
+        win_game_margins.push(win_margin)
+      end
+    end
+
+    stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_win_margin'
+    })
+
+    stat.value = win_game_margins.sum.fdiv(win_game_margins.size).round(0)
+    stat.save!
+  end
+
+  def update_avg_loss_margin!(team)
+    loss_game_margins = []
+
+    gt = GameTeam.where(team_id: team.id)
+    for g in gt do
+      game = Game.find(g.game_id)
+
+      if game.result != g.side && game.result != 'draw'
+        if g.side == 'home'
+          loss_margin = game.away_team_points - game.home_team_points
+        elsif g.side == 'away'
+          loss_margin = game.home_team_points - game.away_team_points
+        end
+
+        loss_game_margins.push(loss_margin)
+      end
+    end
+
+    stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_loss_margin'
+    })
+
+    stat.value = loss_game_margins.sum.fdiv(loss_game_margins.size).round(0)
+    stat.save!
+  end
+
   def update_avg_errors_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
@@ -139,6 +193,8 @@ class TeamStatsUpdaterJob < ApplicationJob
 
   def perform(*args)
     for team in Team.all do
+      update_avg_win_margin!(team)
+      update_avg_loss_margin!(team)
       update_avg_errors_per_game!(team)
       update_avg_tries_per_game!(team)
       update_avg_goals_per_game!(team)

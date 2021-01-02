@@ -25,6 +25,10 @@ class ResultModel < Eps::Base
     away = GameTeam.find_by(game_id: game.id, side: 'away')
 
     {
+      'home_team_avg_win_margin': TeamStat.find_by(team_id: home.team_id, name: 'avg_win_margin').value,
+      'away_team_avg_win_margin': TeamStat.find_by(team_id: away.team_id, name: 'avg_win_margin').value,
+      'home_team_avg_loss_margin': TeamStat.find_by(team_id: home.team_id, name: 'avg_loss_margin').value,
+      'away_team_avg_loss_margin': TeamStat.find_by(team_id: away.team_id, name: 'avg_loss_margin').value,
       'home_team_avg_goals_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_goals_per_game').value,
       'away_team_avg_goals_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_goals_per_game').value,
       'home_team_avg_tries_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_tries_per_game').value,
