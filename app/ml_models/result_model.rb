@@ -4,7 +4,7 @@ class ResultModel < Eps::Base
 
     # train
     data = games.map { |v| features(v) }
-    store = Model.where(key: 'price').first_or_initialize
+    store = Model.where(key: 'result').first_or_initialize
     model = Eps::Model.new(data, target: :result, split: {validation_size: 0.50})
     store.update(data: model.to_pmml)
 
@@ -59,7 +59,7 @@ class ResultModel < Eps::Base
 
   def model
     @model ||= begin
-        data = Model.find_by({key: 'price'}).data
+        data = Model.find_by({key: 'result'}).data
         Eps::Model.load_pmml(data)
     end
   end
