@@ -8,6 +8,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     avg_tries_per_game = TeamStat.find_by(team_id: team.id, name: 'avg_tries_per_game').value
     avg_goals_per_game = TeamStat.find_by(team_id: team.id, name: 'avg_goals_per_game').value
 
+    stat = TeamStat.find_or_create_by({team_id: team.id, name: 'avg_points_per_game').value
     avg_points_per_game = ((avg_tries_per_game * 4) + (avg_goals_per_game * 2))
     stat.value = avg_points_per_game
     stat.save!
