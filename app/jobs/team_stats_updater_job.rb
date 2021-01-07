@@ -198,6 +198,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_errors_per_game!(team)
       update_avg_tries_per_game!(team)
       update_avg_goals_per_game!(team)
+      update_avg_points_per_game!(team)
       update_avg_line_breaks_per_game!(team)
       update_avg_penalties_per_game!(team)
       update_total_tries!(team)
