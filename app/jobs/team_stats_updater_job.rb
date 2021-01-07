@@ -1,6 +1,18 @@
 class TeamStatsUpdaterJob < ApplicationJob
   queue_as :default
 
+  # TODO: should the avg points per game be calculated by:
+  # - adding avg tries per game and avg goals per game together
+  # - grabbing all game total points and averaging that number
+  def update_avg_points_per_game!(team)
+    avg_tries_per_game = TeamStat.find_by(team_id: team.id, name: 'avg_tries_per_game').value
+    avg_goals_per_game = TeamStat.find_by(team_id: team.id, name: 'avg_goals_per_game').value
+
+    avg_points_per_game = ((avg_tries_per_game * 4) + (avg_goals_per_game * 2))
+    stat.value = avg_points_per_game
+    stat.save!
+  end
+
   def update_avg_win_margin!(team)
     win_game_margins = []
 
@@ -198,9 +210,9 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_errors_per_game!(team)
       update_avg_tries_per_game!(team)
       update_avg_goals_per_game!(team)
-      update_avg_points_per_game!(team)
       update_avg_line_breaks_per_game!(team)
       update_avg_penalties_per_game!(team)
+      update_avg_points_per_game!(team)
       update_total_tries!(team)
       update_total_errors!(team)
       update_total_penalties!(team)
