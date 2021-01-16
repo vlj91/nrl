@@ -40,7 +40,6 @@ class GameStatsScraperJob < ApplicationJob
       away_team = Team.find_by(id: game.away_team.team_id)
 
       url = game_url(game.round, home_team.slug, away_team.slug)
-      logger.info "URL: #{url}"
       doc = page_data(url, 'div#vue-match-centre')['match']
 
       ['homeTeam', 'awayTeam'].each do |team|
@@ -58,7 +57,6 @@ class GameStatsScraperJob < ApplicationJob
       end
 
       doc['timeline'].each do |event|
-        logger.info event['type']
         GameEventType.find_or_create_by(name: event['type'])
         next unless VALID_EVENT_TYPES.include? event['type']
 
