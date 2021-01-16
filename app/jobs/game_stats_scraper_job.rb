@@ -61,11 +61,10 @@ class GameStatsScraperJob < ApplicationJob
         end
       end
 
-      logger.info "Found #{doc['timeline'].length} events"
       for event in doc['timeline'] do
         next unless VALID_EVENT_TYPES.include? event['type']
 
-        game_event_params = {
+        GameEvent.find_or_create_by({
           event_type: event['type'],
           name: event['title'],
           game_id: game.id,
@@ -73,9 +72,7 @@ class GameStatsScraperJob < ApplicationJob
           team_id: Team.find_by(nrl_id: event['teamId']).id,
           description: event['description'],
           game_seconds: event['gameSeconds']
-        }
-
-        GameEvent.find_or_create_by(game_event_params)
+        })
       end
     end
   end
