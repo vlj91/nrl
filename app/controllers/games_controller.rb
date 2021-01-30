@@ -1,7 +1,4 @@
 class GamesController < ApplicationController
-  def show
-  end
-
   def list
   end
 

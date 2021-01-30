@@ -146,8 +146,40 @@ class TeamStatsUpdaterJob < ApplicationJob
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
     games = Game.where(id: game_ids)
 
+    penalty_types = [
+      'Penalty',
+      'Penalty - Slow Peel',
+      'Penalty - Early Tackle',
+      'Penalty - Pressure on Kicker',
+      'Penalty - Flop',
+      'Penalty - Leg Pull',
+      'Penalty - 2nd Effort',
+      'Penalty - Dangerous Tackle',
+      'Penalty - Hand in the Ruck',
+      'Penalty - Shoulder Charge',
+      'Penalty - Offside Downtown',
+      'Penalty - Holding Down',
+      'Penalty - Ball Strip',
+      'Penalty - Offside inside 10m',
+      'Penalty - Crowding',
+      'Penalty - Offside General',
+      'Penalty - Marker Not Square',
+      'Penalty - Grappe',
+      'Penalty - Professional Foul',
+      'Penalty - Lying in the Ruck',
+      'Penalty - Scrum Infringement',
+      'Penalty - Obstruction',
+      'Penalty - Escorts',
+      'Penalty - Holding Back',
+      'Penalty - Late Tackle',
+      'Penalty - Verbal Dissent',
+      'Penalty - Working on the Ground',
+      'Penalty - Punching',
+      'Penalties - Other'
+    ]
+
     for game in games do
-      penalties.push(game.game_events.where(team_id: team.id, event_type: 'Penalty').count)
+      penalties.push(game.game_events.where(team_id: team.id, event_type: penalty_types).count)
     end
 
     team_stat.value = penalties.sum.fdiv(penalties.size).round(0)
