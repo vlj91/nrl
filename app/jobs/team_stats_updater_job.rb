@@ -164,7 +164,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       'Penalty - Crowding',
       'Penalty - Offside General',
       'Penalty - Marker Not Square',
-      'Penalty - Grappe',
+      'Penalty - Grappel',
       'Penalty - Professional Foul',
       'Penalty - Lying in the Ruck',
       'Penalty - Scrum Infringement',
