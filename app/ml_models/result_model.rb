@@ -13,7 +13,7 @@ class ResultModel < Eps::Base
     # train
     data = games.map { |v| features(v) }
     store = Model.where(key: 'result').first_or_initialize
-    model = Eps::Model.new(data, target: :result, split: {validation_size: 0.50})
+    model = Eps::Model.new(data, target: :result, split: {validation_size: 0.75})
     store.update(data: model.to_pmml)
 
     print model.summary
