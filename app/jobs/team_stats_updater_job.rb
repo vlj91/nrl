@@ -22,6 +22,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       # we don't want to calculate margins for games that haven't been played
       game = Game.where(id: g.game_id, played: true, result: ['home', 'away', 'draw']).first
 
+      next if game.result == nil
       if game.result == g.side
         if g.side == 'home'
           win_margin = game.home_team_points - game.away_team_points
@@ -50,6 +51,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       # we don't want to calculate margins for games that haven't been played
       game = Game.where(id: g.game_id, played: true, result: ['home', 'away', 'draw']).first
 
+      next if game.result == nil
       if game.result != g.side && game.result != 'draw'
         if g.side == 'home'
           loss_margin = game.away_team_points - game.home_team_points
