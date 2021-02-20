@@ -3,6 +3,6 @@ class PredictionsController < ApplicationController
   	game = Game.find(params[:id])
   	@prediction = ResultModel.new.predict(game)
 
-  	render :json => @prediction
+  	render :json => {"predicted_winner": @prediction}
   end
 end
