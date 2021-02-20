@@ -1,6 +1,8 @@
 class PredictionsController < ApplicationController
   def accuracy
-  	render :json => ResultModel.new.accuracy
+    accuracy = (ResultModel.new.accuracy[:accuracy] * 100).round(2)
+
+    render :json => {"accuracy_percent": accuracy}
   end
 
   def show
