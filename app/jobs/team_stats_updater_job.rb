@@ -20,7 +20,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     gt = GameTeam.where(team_id: team.id)
     for g in gt do
       # we don't want to calculate margins for games that haven't been played
-      game = Game.where(id: g.game_id, played: true).first
+      game = Game.where(id: g.game_id, played: true, result: ['home', 'away', 'draw']).first
 
       if game.result == g.side
         if g.side == 'home'
@@ -48,7 +48,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     gt = GameTeam.where(team_id: team.id)
     for g in gt do
       # we don't want to calculate margins for games that haven't been played
-      game = Game.where(id: g.game_id, played: true).first
+      game = Game.where(id: g.game_id, played: true, result: ['home', 'away', 'draw']).first
 
       if game.result != g.side && game.result != 'draw'
         if g.side == 'home'
@@ -79,7 +79,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     errs = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
     # we don't want to calculate margins for games that haven't been played
-    games = Game.where(id: game_ids, played: true)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
     for game in games do
       errs.push(game.game_events.where(team_id: team.id, event_type: 'Error').count)
     end
@@ -96,7 +96,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     tries = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids, played: true)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
     for game in games do
       tries.push(game.game_events.where(team_id: team.id, event_type: 'Try').count)
     end
@@ -113,7 +113,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     goals = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids, played: true)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
     for game in games do
       goals.push(game.game_events.where(team_id: team.id, event_type: 'Goal').count)
     end
@@ -130,7 +130,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     line_breaks = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids, played: true)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
     for game in games do
       line_breaks.push(game.game_events.where(team_id: team.id, event_type: 'LineBreak').count)
     end
@@ -147,7 +147,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     penalties = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids, played: true)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
 
     penalty_types = [
       'Penalty',
