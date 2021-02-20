@@ -31,7 +31,7 @@ class PlayerStatsUpdaterJob < ApplicationJob
 
     tries = []
     game_ids = GameTeam.where(team_id: player.team_id).map(&:game_id)
-    games = Game.where(id: game_ids)
+    games = Game.where(id: game_ids, played: true)
 
     for game in games do
       tries.push(game.game_events.where(team_id: player.team_id, player_id: player.id, event_type: 'Try').count)

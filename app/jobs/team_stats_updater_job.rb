@@ -75,7 +75,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     })
 
     errs = []
-    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    game_ids = GameTeam.where(team_id: team.id, played: true).map(&:game_id)
     games = Game.where(id: game_ids)
     for game in games do
       errs.push(game.game_events.where(team_id: team.id, event_type: 'Error').count)
@@ -93,7 +93,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     tries = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids)
+    games = Game.where(id: game_ids, played: true)
     for game in games do
       tries.push(game.game_events.where(team_id: team.id, event_type: 'Try').count)
     end
@@ -110,7 +110,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     goals = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids)
+    games = Game.where(id: game_ids, played: true)
     for game in games do
       goals.push(game.game_events.where(team_id: team.id, event_type: 'Goal').count)
     end
@@ -127,7 +127,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     line_breaks = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids)
+    games = Game.where(id: game_ids, played: true)
     for game in games do
       line_breaks.push(game.game_events.where(team_id: team.id, event_type: 'LineBreak').count)
     end
@@ -144,7 +144,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     penalties = []
     game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
-    games = Game.where(id: game_ids)
+    games = Game.where(id: game_ids, played: true)
 
     penalty_types = [
       'Penalty',

@@ -48,9 +48,7 @@ class GameStatsUpdaterJob < ApplicationJob
   end
 
   def perform(*args)
-    current_date = Date.today.strftime("%Y-%m-%d").to_date
-    for game in Game.all do
-      next unless game.date.to_date < current_date # we don't want to run these jobs for unplayed games
+    for game in Game.all.where(played: true) do
       update_team_stat!(game, 'home', 'tries', 'Try')
       update_team_stat!(game, 'away', 'tries', 'Try')
       update_team_stat!(game, 'home', 'goals', 'Goal')
