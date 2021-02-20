@@ -77,6 +77,10 @@ class ResultModel < Eps::Base
       'home_team_avg_forty_twenties_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_forty_twenties_per_game').value,
       'away_team_avg_forty_twenties_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_forty_twenties_per_game').value,
 
+      # avg sin bins per game
+      'home_team_avg_sin_bins_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_sin_bins_per_game').value,
+      'away_team_avg_sin_bins_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_sin_bins_per_game').value,
+
       # number of wins
       'home_team_wins': Team.find(home.team_id).wins,
       'away_team_wins': Team.find(away.team_id).wins,
