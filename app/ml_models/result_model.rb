@@ -1,4 +1,12 @@
 class ResultModel < Eps::Base
+  def accuracy
+    games = Game.all
+    actual = games.map(&:result)
+    predicted = games.map(&:predicted_result)
+
+    Eps.metrics(actual, predicted)
+  end
+
   def build
     games = Game.all
 
