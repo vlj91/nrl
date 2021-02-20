@@ -13,7 +13,7 @@ class GameStatsScraperJob < ApplicationJob
     'SinBin'
   ]
 
-  def game_url(round, home_team, away_team)
+  def game_url(round, home_team, away_team, season)
     # i'm sure there's a nicer way to do this..
     case round
     when 1..20
@@ -26,7 +26,7 @@ class GameStatsScraperJob < ApplicationJob
       round_title = "finals-week-3"
     end
 
-    "https://www.nrl.com/draw/nrl-premiership/2020/#{round_title}/#{home_team}-v-#{away_team}/"
+    "https://www.nrl.com/draw/nrl-premiership/#{season}/#{round_title}/#{home_team}-v-#{away_team}/"
   end
 
   def event_team_id(id, home_team, away_team)
@@ -35,11 +35,18 @@ class GameStatsScraperJob < ApplicationJob
   end
 
   def perform(*args)
+    current_date = Date.today.strftime("%Y-%m-%d").to_date
     for game in Game.all do
+      # skip stats collection for games that have not yet been played
+      unless game.date.to_date < current_date
+        logger.info "Game has not been played yet. Scheduled date: #{game.date}"
+        next
+      end
+
       home_team = Team.find_by({id: game.home_team.team_id})
       away_team = Team.find_by({id: game.away_team.team_id})
 
-      url = game_url(game.round, home_team.name, away_team.name)
+      url = game_url(game.round, home_team.name, away_team.name, game.season)
       doc = page_data(url, "div#vue-match-centre")['match']
 
       for team in ['homeTeam', 'awayTeam'] do

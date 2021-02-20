@@ -1,6 +1,6 @@
 class ResultModel < Eps::Base
   def accuracy
-    games = Game.all
+    games = Game.all.where(played: true)
     actual = games.map(&:result)
     predicted = games.map(&:predicted_result)
 
@@ -8,7 +8,7 @@ class ResultModel < Eps::Base
   end
 
   def build
-    games = Game.all
+    games = Game.all.where(played: true)
 
     # train
     data = games.map { |v| features(v) }

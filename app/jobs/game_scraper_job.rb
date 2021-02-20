@@ -1,40 +1,48 @@
 class GameScraperJob < ApplicationJob
   queue_as :default
 
-  DRAW_BASE_URL = 'https://nrl.com/draw/?competition=111&season=2020' # TODO: allow filtering by year
+  NRL_COMP_ID = 111
+
+  def draw_url(round, season)
+    "https://nrl.com/draw/?competition=#{NRL_COMP_ID}&season=#{season}&round=#{round}"
+  end
+
 
   def perform(*args)
-    (1..23).each do |round|
-      logger.info "Scraping games in round #{round}"
-      doc = page_data("#{DRAW_BASE_URL}&round=#{round}", "div#vue-draw")
+    (2020..2021).each do |season|
+      (1..23).each do |round|
+        logger.info "Scraping games from round #{round}, season #{season}"
 
-      logger.info "Scraping #{doc['fixtures'].length} games"
-      for fixture in doc['fixtures'] do
-        next if fixture['roundTitle'] == 'GrandFinal' # not interested
-        logger.info fixture.keys
-        date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s)
-        home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
-        away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
+        # load the games for the current round
+        doc = page_data(draw_url(round, season), 'div#vue-draw')
+        logger.info "Found #{doc['fixtures'].length} games to scrape"
 
-        game = Game.find_or_create_by({
-          date: date,
-          round: round,
-          title: "#{home_team.name}-v-#{away_team.name}",
-          stadium: fixture['venue'],
-          city: fixture['venueCity']
-        })
+        for fixture in doc['fixtures'] do
+          date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s)
+          home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
+          away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
 
-        game_home_team = GameTeam.find_or_create_by({
-          game_id: game.id,
-          team_id: home_team.id,
-          side: 'home'
-        })
+          game = Game.find_or_create_by({
+            date: date,
+            round: round,
+            season: season,
+            title: "#{home_team.name}-v-#{away_team.name}",
+            stadium: fixture['venue'],
+            city: fixture['venueCity']
+          })
 
-        game_away_team = GameTeam.find_or_create_by({
-          game_id: game.id,
-          team_id: away_team.id,
-          side: 'away'
-        })
+          game_home_team = GameTeam.find_or_create_by({
+            game_id: game.id,
+            team_id: home_team.id,
+            side: 'home'
+          })
+
+          game_away_team = GameTeam.find_or_create_by({
+            game_id: game.id,
+            team_id: away_team.id,
+            side: 'away'
+          })
+        end
       end
     end
   end

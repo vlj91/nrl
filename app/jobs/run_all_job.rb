@@ -5,6 +5,7 @@ class RunAllJob < ApplicationJob
     TeamScraperJob.perform_now
     PlayerScraperJob.perform_now
     GameScraperJob.perform_now
+    UpdateGamePlayedJob.perform_now
     GameStatsScraperJob.perform_now
     GameResultUpdaterJob.perform_now
 
