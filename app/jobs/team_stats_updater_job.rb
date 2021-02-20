@@ -161,6 +161,24 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
+  def update_avg_kick_bombs_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_kick_bombs_per_game'
+    })
+
+    kick_bombs = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      kick_bombs.push(game.game_events.where(team_id: team.id, event_type: 'KickBomb').count)
+    end
+
+    team_stat.value = kick_bombs.sum.fdiv(kick_bombs.size).round(0)
+    team_stat.save!
+  end
+
   def update_avg_penalties_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
@@ -235,6 +253,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_line_breaks_per_game!(team)
       update_avg_penalties_per_game!(team)
       update_avg_points_per_game!(team)
+      update_avg_kick_bombs_per_game!(team)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
       update_total!('Penalty', team.id, 'total_penalties')
