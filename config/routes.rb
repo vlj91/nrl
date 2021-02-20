@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  get 'games/show'
-  get 'games/list'
-  get 'games/predict'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :games, :players, :teams, :predictions
+  get "/games", to: "games#list"
+  get "/players", to: "players#list"
+  get "/teams", to: "teams#list"
+  get "/predictions/:id", to: "predictions#get"
 end

@@ -1,7 +1,13 @@
 class GamesController < ApplicationController
-  def list
-  end
+	def list
+		@game = Game.all
 
-  def predict
-  end
+		render :json => @game
+	end
+
+	def show
+		@game = Game.find(params[:id])
+
+		render :json => @game
+	end
 end
