@@ -35,14 +35,7 @@ class GameStatsScraperJob < ApplicationJob
   end
 
   def perform(*args)
-    current_date = Date.today.strftime("%Y-%m-%d").to_date
-    for game in Game.all do
-      # skip stats collection for games that have not yet been played
-      unless game.date.to_date < current_date
-        logger.info "Game has not been played yet. Scheduled date: #{game.date}"
-        next
-      end
-
+    for game in Game.all.where(played: true) do
       home_team = Team.find_by({id: game.home_team.team_id})
       away_team = Team.find_by({id: game.away_team.team_id})
 
