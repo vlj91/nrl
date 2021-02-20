@@ -41,3 +41,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "eps", "~> 0.3.7"
+
+gem "postgresql", "~> 1.0"
