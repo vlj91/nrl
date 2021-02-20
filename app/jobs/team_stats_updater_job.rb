@@ -75,7 +75,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     })
 
     errs = []
-    game_ids = GameTeam.where(team_id: team.id, played: true).map(&:game_id)
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
     games = Game.where(id: game_ids)
     for game in games do
       errs.push(game.game_events.where(team_id: team.id, event_type: 'Error').count)
