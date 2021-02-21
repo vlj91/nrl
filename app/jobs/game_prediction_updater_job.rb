@@ -2,7 +2,7 @@ class GamePredictionUpdaterJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    games = Game.all.where(predicted_result: nil)
+    games ||= Game.all.where(predicted_result: nil)
     # ensure the model is built
     ResultModel.build
 
