@@ -11,6 +11,10 @@ class ResultModel < Eps::Base
     model.predict_probability(features(game))
   end
 
+  def summary
+    model.summary
+  end
+
   def build
     games = Game.all.where(played: true)
 
