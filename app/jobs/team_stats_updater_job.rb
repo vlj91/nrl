@@ -263,7 +263,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
 
     for game in games do
-      ball_strips.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Penalty - Ball Strip')
+      ball_strips.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Penalty - Ball Strip').count)
     end
 
     team_stat.value = ball_strips.sum.fdiv(ball_strips.size).round(0)
