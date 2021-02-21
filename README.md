@@ -11,7 +11,11 @@ Run the jobs in order to scrape the initial data:
 3. `GameScraperJob`
 4. `GameStatsScraperJob`
 
-Alternatively, just run `RunAllJob`
+Alternatively, just run `RunAllJob`.
+
+Jobs that need to be continually run throughout a season:
+
+* `DailyJob`
 
 ## Things
 
