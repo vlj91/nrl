@@ -7,13 +7,8 @@ class GamePredictionUpdaterJob < ApplicationJob
     ResultModel.build
 
     for game in games do
-      current_prediction = game.predicted_result
       game.predicted_result = ResultModel.predict(game)
       game.save!
-
-      if current_prediction != game.predicted_result
-        logger.info "game #{game.id} changed predicted result from #{current_prediction} to #{game.predicted_result}"
-      end
     end
   end
 end
