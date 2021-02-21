@@ -17,9 +17,9 @@ class PredictionsController < ApplicationController
   def odds
     probability = ResultModel.new.probability(Game.find(params[:id]))
 
-    probability[:home] = 1 / (probability[:home] / 100)
-    probability[:draw] = 1 / (probability[:draw] / 100)
-    probability[:away] = 1 / (probability[:away] / 100)
+    probability[:home] = (1 / (probability[:home] / 100))
+    probability[:draw] = (1 / (probability[:draw] / 100))
+    probability[:away] = (1 / (probability[:away] / 100))
 
     render :json => probability
   end
