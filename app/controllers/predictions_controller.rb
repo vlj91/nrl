@@ -15,13 +15,12 @@ class PredictionsController < ApplicationController
 
   # /predictions/odds/:id
   def odds
-    probability = ResultModel.new.probability(Game.find(params[:id]))
+    data = ResultModel.new.probability(Game.find(params[:id]))
+    data['home'] = 1 / data['home']
+    data['draw'] = 1 / data['draw']
+    data['away'] = 1 / data['away']
 
-    probability[:home] = (1 / (probability[:home] / 100))
-    probability[:draw] = (1 / (probability[:draw] / 100))
-    probability[:away] = (1 / (probability[:away] / 100))
-
-    render :json => probability
+    render :json => data
   end
 
   # /predction/:id
