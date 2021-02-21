@@ -31,6 +31,14 @@ Returns the probabilities of each side winning a game. Provide game_id:
 {"away": 0.08881750275339861, "draw": 0.002411944486199366, "home": 0.9087705527604021}
 ```
 
+### `GET /predictions/odds/:id`
+
+Returns the odds of each side winning a game. Provide game_id:
+
+```json
+{"away":2.8177114573036244,"draw":55.42335925179432,"home":1.5947459543327327}
+```
+
 ### `GET /prediction/:id`
 
 Returns the predicted winner of a game. Provide game_id:
