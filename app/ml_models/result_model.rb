@@ -12,7 +12,7 @@ class ResultModel < Eps::Base
   end
 
   def feature_keys
-    features(game).keys
+    features(Game.first).keys
   end
 
   def build
