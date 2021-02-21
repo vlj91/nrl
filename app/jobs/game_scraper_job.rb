@@ -2,15 +2,25 @@ class GameScraperJob < ApplicationJob
   queue_as :default
 
   NRL_COMP_ID = 111
+  CURRENT_SEASON = 2021
 
   def draw_url(round, season)
     "https://nrl.com/draw/?competition=#{NRL_COMP_ID}&season=#{season}&round=#{round}"
   end
 
+  def current_season_played_up_to_finals?(season)
+    # returns true if no games in round 19 (final week of regular games)
+    # has any unplayed matches.
+    # we don't want to scrape games for finals, as the draw isn't
+    # necessarily decided, and would be harder to reconcile later
+    # in the season. by doing this, we can defer scraping those games.
+    Game.where(season: season, round: 19, played: false).count == 0
+  end
 
   def perform(*args)
-    (2020..2021).each do |season|
-      (1..23).each do |round|
+    (2019..2021).each do |season|
+      (1..24).each do |round|
+        next unless current_season_played_up_to_finals?(season)
         logger.info "Scraping games from round #{round}, season #{season}"
 
         # load the games for the current round

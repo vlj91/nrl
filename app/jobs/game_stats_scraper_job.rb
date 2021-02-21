@@ -24,6 +24,8 @@ class GameStatsScraperJob < ApplicationJob
       round_title = "finals-week-2"
     when 23
       round_title = "finals-week-3"
+    when 24
+      round_title = "grand-final"
     end
 
     "https://www.nrl.com/draw/nrl-premiership/#{season}/#{round_title}/#{home_team}-v-#{away_team}/"
