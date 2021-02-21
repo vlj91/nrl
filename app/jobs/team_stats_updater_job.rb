@@ -306,6 +306,24 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
+  def update_avg_conversions_made_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_conversions_made_per_game'
+    })
+
+    conversions_made = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      conversions_made.push(game.game_events.where(team_id: team.id, event_type: 'Goal', name: 'Conversion-Made').count)
+    end
+
+    team_stat.value = conversions_made.sum.fdiv(conversions_made.size).round(0)
+    team_stat.save!
+  end
+
   def update_avg_penalties_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
@@ -388,6 +406,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_offsides_per_game!(team)
       update_avg_ball_strips_per_game!(team)
       update_avg_professional_fouls_per_game!(team)
+      update_avg_conversions_made_per_game!(team)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
       update_total!('Penalty', team.id, 'total_penalties')
