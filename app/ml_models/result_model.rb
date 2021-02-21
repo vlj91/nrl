@@ -34,8 +34,6 @@ class ResultModel < Eps::Base
     model.predict(features(game))
   end
 
-  private
-
   def features(game)
     # cache team results for current game, they get used a lot
     home ||= GameTeam.find_by(game_id: game.id, side: 'home')
@@ -82,6 +80,8 @@ class ResultModel < Eps::Base
 
     return features
   end
+
+  private
 
   def model
     @model ||= begin
