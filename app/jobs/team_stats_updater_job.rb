@@ -331,6 +331,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_forty_twenties_per_game!(team)
       update_avg_sin_bins_per_game!(team)
       update_avg_send_offs_per_game!(team)
+      update_avg_offsides_per_game!(team)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
       update_total!('Penalty', team.id, 'total_penalties')
