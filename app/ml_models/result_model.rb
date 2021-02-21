@@ -29,85 +29,32 @@ class ResultModel < Eps::Base
   private
 
   def features(game)
-    home = GameTeam.find_by(game_id: game.id, side: 'home')
-    away = GameTeam.find_by(game_id: game.id, side: 'away')
+    # cache team results for current game, they get used a lot
+    home ||= GameTeam.find_by(game_id: game.id, side: 'home')
+    away ||= GameTeam.find_by(game_id: game.id, side: 'away')
+    home_team ||= Team.find(home.team_id)
+    away_team ||= Team.find(away.team_id)
 
-    {
-      # avg win margin
-      'home_team_avg_win_margin': TeamStat.find_by(team_id: home.team_id, name: 'avg_win_margin').value,
-      'away_team_avg_win_margin': TeamStat.find_by(team_id: away.team_id, name: 'avg_win_margin').value,
-
-      # avg loss margin
-      'home_team_avg_loss_margin': TeamStat.find_by(team_id: home.team_id, name: 'avg_loss_margin').value,
-      'away_team_avg_loss_margin': TeamStat.find_by(team_id: away.team_id, name: 'avg_loss_margin').value,
-
-      # avg goals per game
-      'home_team_avg_goals_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_goals_per_game').value,
-      'away_team_avg_goals_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_goals_per_game').value,
-
-      # avg goals missed per game
-      'home_team_avg_goals_missed_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_goals_missed_per_game').value,
-      'away_team_avg_goals_missed_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_goals_missed_per_game').value,
-
-      # avg tries per game
-      'home_team_avg_tries_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_tries_per_game').value,
-      'away_team_avg_tries_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_tries_per_game').value,
-
-      # avg errors per game
-      'home_team_avg_errors_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_errors_per_game').value,
-      'away_team_avg_errors_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_errors_per_game').value,
-
-      # avg line breaks per game
-      'home_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_line_breaks_per_game').value,
-      'away_team_avg_line_breaks_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_line_breaks_per_game').value,
-
-      # avg penalties per game
-      'home_team_avg_penalties_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_penalties_per_game').value,
-      'away_team_avg_penalties_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_penalties_per_game').value,
-
-      # avg points per game
-      'home_team_avg_points_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_points_per_game').value,
-      'away_team_avg_points_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_points_per_game').value,
-
-      # avg kick bombs per game
-      'home_team_avg_kick_bombs_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_kick_bombs_per_game').value,
-      'away_team_avg_kick_bombs_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_kick_bombs_per_game').value,
-
-      # avg forty twenties per game
-      'home_team_avg_forty_twenties_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_forty_twenties_per_game').value,
-      'away_team_avg_forty_twenties_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_forty_twenties_per_game').value,
-
-      # avg sin bins per game
-      'home_team_avg_sin_bins_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_sin_bins_per_game').value,
-      'away_team_avg_sin_bins_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_sin_bins_per_game').value,
-
-      # avg send offs per game
-      'home_team_avg_send_offs_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_send_offs_per_game').value,
-      'away_team_avg_send_offs_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_send_offs_per_game').value,
-
-      # avg offsides per game
-      'home_team_avg_offsides_per_game': TeamStat.find_by(team_id: home.team_id, name: 'avg_offsides_per_game').value,
-      'away_team_avg_offsides_per_game': TeamStat.find_by(team_id: away.team_id, name: 'avg_offsides_per_game').value,
-
+    features = {
       # number of wins
-      'home_team_wins': Team.find(home.team_id).wins,
-      'away_team_wins': Team.find(away.team_id).wins,
+      'home_team_wins': home_team.wins,
+      'away_team_wins': away_team.wins,
 
       # number of draws
-      'home_team_drawn': Team.find(home.team_id).draws,
-      'away_team_drawn': Team.find(away.team_id).draws,
+      'home_team_drawn': home_team.draws,
+      'away_team_drawn': away_team.draws,
 
       # number of losses
-      'home_team_losses': Team.find(home.team_id).losses,
-      'away_team_losses': Team.find(away.team_id).losses,
+      'home_team_losses': home_team.losses,
+      'away_team_losses': away_team.losses,
 
       # number of home game wins
-      'home_team_home_game_wins': Team.find(home.team_id).home_game_wins,
-      'away_team_home_game_wins': Team.find(away.team_id).home_game_wins,
+      'home_team_home_game_wins': home_team.home_game_wins,
+      'away_team_home_game_wins': away_team.home_game_wins,
 
       # number of away game wins
-      'home_team_away_game_wins': Team.find(home.team_id).away_game_wins,
-      'away_team_away_game_wins': Team.find(away.team_id).away_game_wins,
+      'home_team_away_game_wins': home_team.away_game_wins,
+      'away_team_away_game_wins': away_teams.away_game_wins,
 
       # features about the match not specific to a team
       'result': game.result,
@@ -116,6 +63,16 @@ class ResultModel < Eps::Base
       'stadium': game.stadium,
       'city': game.city
     }
+
+    for stat in TeamStat.where(team_id: home.team_id) do
+      features.merge!({"home_team_#{stat.name}": stat.value})
+    end
+
+    for stat in TeamStat.where(team_id: away.team_id) do
+      features.merge!({"away_team_#{stat.name}": stat.value})
+    end
+
+    return features
   end
 
   def model
