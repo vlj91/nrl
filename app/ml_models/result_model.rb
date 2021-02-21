@@ -11,8 +11,8 @@ class ResultModel < Eps::Base
     model.predict_probability(features(game))
   end
 
-  def summary
-    model.summary
+  def feature_keys
+    features(game).keys
   end
 
   def build
