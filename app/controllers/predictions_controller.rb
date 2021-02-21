@@ -6,6 +6,13 @@ class PredictionsController < ApplicationController
     render :json => {"accuracy_percent": accuracy}
   end
 
+  # /predictions/probability/:id
+  def probability
+    probability = ResultModel.new.probability(Game.find(params[:id]))
+
+    render :json => probability
+  end
+
   # /predction/:id
   def show
   	game = Game.find(params[:id])
