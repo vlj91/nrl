@@ -35,6 +35,7 @@ class PredictionsController < ApplicationController
     for game in Game.where(season: params[:season], round: params[:round]) do
       predictions.push({
         title: game.title,
+        game_id: game.id,
         predicted_result: game.predicted_result,
         probability: ResultModel.new.probability(Game.find(game.id))
       })
