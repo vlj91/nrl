@@ -288,6 +288,24 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
+  def update_avg_dangerous_tackles_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_dangerous_tackles_per_game'
+    })
+
+    dangerous_tackles = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      dangerous_tackles.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Penalty - Dangerous Tackle').count)
+    end
+    
+    team_stat.value = dangerous_tackles.sum.fdiv(dangerous_tackles.size).round(0)
+    team_stat.save!
+  end
+
   def update_avg_penalties_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
