@@ -54,7 +54,7 @@ class ResultModel < Eps::Base
 
       # number of away game wins
       'home_team_away_game_wins': home_team.away_game_wins,
-      'away_team_away_game_wins': away_teams.away_game_wins,
+      'away_team_away_game_wins': away_team.away_game_wins,
 
       # features about the match not specific to a team
       'result': game.result,
