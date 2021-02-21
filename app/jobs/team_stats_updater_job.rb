@@ -215,6 +215,43 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
+  def update_avg_send_offs_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_send_offs_per_game'
+    })
+
+    send_offs = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      send_offs.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Sent Off').count)
+    end
+
+    team_stat.value = send_offs.sum.fdiv(send_offs.size).round(0)
+    team_stat.save!
+  end
+
+  def update_avg_offsides_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_offsides_per_game'
+    })
+
+    offsides = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      offside_penalty_types = ['Penalty - Offside General', 'Penalty - Offside inside 10m']
+      offsides.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: offside_penalty_types).count)
+    end
+
+    team_stat.value = offsides.sum.fdiv(offsides.size).round(0)
+    team_stat.save!
+  end
+
   def update_avg_penalties_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
@@ -254,7 +291,8 @@ class TeamStatsUpdaterJob < ApplicationJob
       'Penalty - Verbal Dissent',
       'Penalty - Working on the Ground',
       'Penalty - Punching',
-      'Penalties - Other'
+      'Penalties - Other',
+      'Sent Off'
     ]
 
     for game in games do
@@ -292,6 +330,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_kick_bombs_per_game!(team)
       update_avg_forty_twenties_per_game!(team)
       update_avg_sin_bins_per_game!(team)
+      update_avg_send_offs_per_game!(team)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
       update_total!('Penalty', team.id, 'total_penalties')
