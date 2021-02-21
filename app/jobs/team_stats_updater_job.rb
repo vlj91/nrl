@@ -252,6 +252,60 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
+  def update_avg_ball_strips_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_ball_strips_per_game'
+    })
+
+    ball_strips = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      ball_strips.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Penalty - Ball Strip')
+    end
+
+    team_stat.value = ball_strips.sum.fdiv(ball_strips.size).round(0)
+    team_stat.save!
+  end
+
+  def update_avg_professional_fouls_per_game!(team)
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_professional_fouls_per_game'
+    })
+
+    professional_fouls = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      professional_fouls.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Penalty - Professional Foul')
+    end
+
+    team_stat.value = professional_fouls.sum.fdiv(professional_fouls.size).round(0)
+    team_stat.save!
+  end
+
+  def update_avg_dangerous_tackles_per_game!(
+    team_stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'avg_dangerous_tackles_per_game'
+    })
+
+    dangerous_tackles = []
+    game_ids = GameTeam.where(team_id: team.id).map(&:game_id)
+    games = Game.where(id: game_ids, played: true, result: ['home', 'away', 'draw'])
+
+    for game in games do
+      dangerous_tackles.push(game.game_events.where(team_id: team.id, event_type: 'Penalty', name: 'Penalty - Dangerous Tackle')
+    end
+
+    team_stat.value = dangerous_tackles.sum.fdiv(dangerous_tackles.size).round(0)
+    team_stat.save!
+  end
+
   def update_avg_penalties_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
@@ -332,6 +386,9 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_sin_bins_per_game!(team)
       update_avg_send_offs_per_game!(team)
       update_avg_offsides_per_game!(team)
+      update_avg_ball_strips_per_game!(team)
+      update_avg_dangerous_tackles_per_game!(team)
+      update_avg_professional_fouls_per_game!(team)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
       update_total!('Penalty', team.id, 'total_penalties')
