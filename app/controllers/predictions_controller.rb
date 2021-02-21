@@ -28,6 +28,17 @@ class PredictionsController < ApplicationController
     render :json => data
   end
 
+  # /predictions/:season/:round
+  def round
+    predictions = []
+
+    render :json => {
+      round: params[:round],
+      season: params[:season],
+      predictions: predictions
+    }
+  end
+
   # /predction/:id
   def show
   	game = Game.find(params[:id])
