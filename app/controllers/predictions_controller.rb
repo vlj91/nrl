@@ -1,4 +1,9 @@
 class PredictionsController < ApplicationController
+  # /predictions/features
+  def features
+    render :json => ResultModel.new.feature_keys
+  end
+
   # /predictions/accuracy
   def accuracy
     accuracy = (ResultModel.new.accuracy[:accuracy] * 100).round(2)
