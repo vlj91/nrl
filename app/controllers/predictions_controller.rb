@@ -32,7 +32,7 @@ class PredictionsController < ApplicationController
   def round
     predictions = []
 
-    for game Game.where(season: params[:season], round: params[:round]) do
+    for game in Game.where(season: params[:season], round: params[:round]) do
       predictions.push({
         title: game.title,
         predicted_result: game.predicted_result,
