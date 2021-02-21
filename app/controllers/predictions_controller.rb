@@ -32,6 +32,14 @@ class PredictionsController < ApplicationController
   def round
     predictions = []
 
+    for game Game.where(season: params[:season], round: params[:round]) do
+      predictions.push({
+        title: game.title,
+        predicted_result: game.predicted_result,
+        probability: ResultModel.new.probability(Game.find(game.id))
+      })
+    end
+
     render :json => {
       round: params[:round],
       season: params[:season],
