@@ -288,7 +288,7 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
-  def update_avg_dangerous_tackles_per_game!(
+  def update_avg_dangerous_tackles_per_game!(team)
     team_stat = TeamStat.find_or_create_by({
       team_id: team.id,
       name: 'avg_dangerous_tackles_per_game'
