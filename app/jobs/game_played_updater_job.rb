@@ -1,4 +1,4 @@
-class UpdateGamePlayedJob < ApplicationJob
+class GamePlayedUpdaterJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
