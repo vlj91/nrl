@@ -6,7 +6,13 @@ class GamesController < ApplicationController
 	end
 
   def find
-    @game = Game.where(round: params[:round], season: params[:season])
+    if params[:id] == 'seasons'
+      @game = Game.distinct.pluck(:season)
+    elsif params[:id] == 'rounds'
+      @game = Game.distinct.pluck(:round)
+    else
+      @game = Game.where(round: params[:round], season: params[:season])
+    end
 
     render :json => @game
   end
@@ -16,16 +22,4 @@ class GamesController < ApplicationController
 
 		render :json => @game
 	end
-
-  def seasons
-    @season = Game.distinct.pluck(:season)
-
-    render :json => @season
-  end
-
-  def rounds
-    @round = Game.distinct.pluck(:round)
-    
-    render :json => @round
-  end
 end
