@@ -6,20 +6,20 @@ class GamesController < ApplicationController
 	end
 
   def find
-    if params[:id] == 'seasons'
-      @game = Game.distinct.pluck(:season)
-    elsif params[:id] == 'rounds'
-      @game = Game.distinct.pluck(:round)
-    else
-      @game = Game.where(round: params[:round], season: params[:season])
-    end
+    @game = Game.where(round: params[:round], season: params[:season])
 
     render :json => @game
   end
 
 	def show
-		@game = Game.find(params[:id])
+    if params[:id] == 'seasons'
+      @game = Game.distinct.pluck(:season)
+    elsif params[:id] == 'rounds'
+      @game = Game.distinct.pluck(:round)
+    else
+      @game = Game.find(params[:id])
+    end
 
-		render :json => @game
+    render :json => @game
 	end
 end
