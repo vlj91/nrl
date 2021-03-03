@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 
   # games routes
   get "/games" => "games#list"
-  match "games/:id" => "games#show"
-  match "games/:season/:round" => "games#find"
+  match "games/:id" => "games#show", :via => [:get]
+  match "games/:season/:round" => "games#find", :via => [:get]
 
   # players routes
   get "/players" => "players#list"
