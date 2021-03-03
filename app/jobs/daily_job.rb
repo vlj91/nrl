@@ -3,7 +3,7 @@ class DailyJob < ApplicationJob
 
   def perform(*args)
     GameScraperJob.perform_now
-    UpdateGamePlayedJob.perform_now
+    GamePlayedUpdaterJob.perform_now
     GameStatsScraperJob.perform_now
     GameResultUpdaterJob.perform_now
     GameStatsUpdaterJob.perform_now
