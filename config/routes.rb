@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   # games routes
   get "/games" => "games#list"
   get "/games/:id" => "games#show"
+  get "/games/:season/:round" => "games#find"
 
   # players routes
   get "/players" => "players#list"
