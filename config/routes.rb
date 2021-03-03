@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get "/games" => "games#list"
   match "games/:id" => "games#show", :via => [:get]
   match "games/:season/:round" => "games#find", :via => [:get]
+  match "games/seasons" => "games#seasons", :via => [:get]
+  match "games/rounds" => "games#rounds", :via => [:get]
 
   # players routes
   get "/players" => "players#list"

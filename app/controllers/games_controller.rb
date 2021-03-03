@@ -16,4 +16,16 @@ class GamesController < ApplicationController
 
 		render :json => @game
 	end
+
+  def seasons
+    @season = Game.distinct.pluck(:season)
+
+    render :json => @season
+  end
+
+  def rounds
+    @round = Game.distinct.pluck(:round)
+    
+    render :json => @round
+  end
 end
