@@ -13,9 +13,9 @@ class GamesController < ApplicationController
 
 	def show
     if params[:id] == 'seasons'
-      @game = Game.distinct.pluck(:season)
+      @game = Game.distinct.pluck(:season).sort
     elsif params[:id] == 'rounds'
-      @game = Game.distinct.pluck(:round)
+      @game = Game.distinct.pluck(:round).sort
     else
       @game = Game.find(params[:id])
     end
