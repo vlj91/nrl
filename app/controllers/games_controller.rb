@@ -16,6 +16,8 @@ class GamesController < ApplicationController
       @game = Game.distinct.pluck(:season).sort
     elsif params[:id] == 'rounds'
       @game = Game.distinct.pluck(:round).sort
+    elsif params[:id] == 'count'
+      @game = Game.count
     else
       @game = Game.find(params[:id])
     end
