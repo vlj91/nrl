@@ -284,3 +284,7 @@ Returns the predictions for a given round:
   ]
 }
 ```
+
+## TODO
+
+* separate model and scraping, move model to tensorflow
