@@ -6,7 +6,7 @@ class GamesController < ApplicationController
 	end
 
   def find
-    @game = Game.where(round: params[:round], season: params[:season])
+    @game = Game.where(round: params[:round], season: params[:season]).order('date ASC')
 
     if params[:format] == 'batch' && params[:amount]
       results = @game.map(&:predicted_result).map { |x| x.split('')[0] }.join('/').upcase!
