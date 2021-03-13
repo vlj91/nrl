@@ -8,7 +8,12 @@ class GamesController < ApplicationController
   def find
     @game = Game.where(round: params[:round], season: params[:season])
 
-    render :json => @game
+    if params[:format] == 'batch' && params[:amount]
+      results = @game.map(&:predicted_result).map { |x| x.split('')[0] }.join('/').upcase!
+      render :text => "YF-PW-00-#{params[:amount]}/#{results}"
+    else
+      render :json => @game
+    end
   end
 
 	def show
