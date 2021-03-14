@@ -1,6 +1,9 @@
 class ResultModel < Eps::Base
-  def accuracy
+  def accuracy(season: nil, round: nil)
     games = Game.all.where(played: true)
+    games = games.where(season: seasons) if seasons.present?
+    games = games.where(round: rounds) if rounds.present?
+
     actual = games.map(&:result)
     predicted = games.map(&:predicted_result)
 

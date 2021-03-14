@@ -6,7 +6,13 @@ class PredictionsController < ApplicationController
 
   # /predictions/accuracy
   def accuracy
-    accuracy = (ResultModel.new.accuracy[:accuracy] * 100).round(2)
+    if params[:season] && params[:round]
+      result = ResultModel.new.accuracy(season: params[:season].split(','), round: params[:round].split(','))
+    else
+      result = ResultModel.new.accuracy
+    end
+
+    accuracy = (result[:accuracy] * 100).round(2)
 
     render :json => {"accuracy_percent": accuracy}
   end
