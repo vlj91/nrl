@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_063434) do
+ActiveRecord::Schema.define(version: 2021_03_13_113350) do
 
   create_table "game_events", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_063434) do
     t.string "city"
     t.integer "season"
     t.boolean "played"
+    t.integer "round_match"
   end
 
   create_table "models", force: :cascade do |t|
