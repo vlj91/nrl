@@ -1,21 +1,21 @@
 Rails.application.routes.draw do
-  # predictions routes
-  get "/predictions/accuracy" => "predictions#accuracy"
-  get "/predictions/probability/:id" => "predictions#probability"
-  get "/predictions/odds/:id" => "predictions#odds"
-  get "/predictions/features" => "predictions#features"
-  get "/prediction/:id" => "predictions#show"
+  # /api/v1/predictions
+  get "/api/v1/predictions/accuracy" => "predictions#accuracy"
+  get "/api/v1/predictions/probability/:id" => "predictions#probability"
+  get "/api/v1/predictions/odds/:id" => "predictions#odds"
+  match "/api/v1/predictions/features" => "predictions#features", :via => [:get]
+  match "/api/v1/predictions/:id" => "predictions#show", :via => [:get]
 
-  # games routes
-  get "/games" => "games#index"
-  match "games/:id" => "games#show", :via => [:get]
-  match "games/:season/:round" => "games#find", :via => [:get]
+  # /api/v1/games
+  get "/api/v1/games" => "games#index"
+  match "/api/v1/games/:id" => "games#show", :via => [:get]
+  match "/api/v1/games/:season/:round" => "games#find", :via => [:get]
 
   # players routes
-  get "/players" => "players#index"
-  get "/players/:id" => "games#show"
+  get "/api/v1/players" => "players#index"
+  get "/api/v1/players/:id" => "games#show"
 
   # teams routes
-  get "/teams" => "teams#index"
-  get "/teams/:id" => "teams#show"
+  get "/api/v1/teams" => "teams#index"
+  get "/api/v1/teams/:id" => "teams#show"
 end
