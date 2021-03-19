@@ -1,4 +1,4 @@
-class PredictionsController < ApplicationController
+class Api::V1::PredictionsController < ApplicationController
   # /predictions/features
   def features
     render :json => ResultModel.new.feature_keys

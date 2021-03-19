@@ -1,4 +1,4 @@
-class GamesController < ApplicationController
+class Api::V1::GamesController < ApplicationController
 	def list
 		@game = Game.all
 

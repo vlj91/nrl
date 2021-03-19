@@ -1,4 +1,4 @@
-class PlayersController < ApplicationController
+class Api::V1::PlayersController < ApplicationController
   def list
   	@player = Player.all
 
