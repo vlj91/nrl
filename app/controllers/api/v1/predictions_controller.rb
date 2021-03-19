@@ -43,7 +43,7 @@ class Api::V1::PredictionsController < ApplicationController
         title: game.title,
         game_id: game.id,
         predicted_result: game.predicted_result,
-        probability: ResultModel.new.probability(Game.find(game.id))
+        probability: ResultModel.new.probability(game)
       })
     end
 
