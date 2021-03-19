@@ -8,17 +8,15 @@ Rails.application.routes.draw do
   get "/prediction/:id" => "predictions#show"
 
   # games routes
-  get "/games" => "games#list"
+  get "/games" => "games#index"
   match "games/:id" => "games#show", :via => [:get]
   match "games/:season/:round" => "games#find", :via => [:get]
-  match "games/seasons" => "games#seasons", :via => [:get]
-  match "games/rounds" => "games#rounds", :via => [:get]
 
   # players routes
-  get "/players" => "players#list"
+  get "/players" => "players#index"
   get "/players/:id" => "games#show"
 
   # teams routes
-  get "/teams" => "teams#list"
+  get "/teams" => "teams#index"
   get "/teams/:id" => "teams#show"
 end

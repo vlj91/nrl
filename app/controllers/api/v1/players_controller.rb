@@ -1,13 +1,13 @@
 class Api::V1::PlayersController < ApplicationController
-  def list
-  	@player = Player.all
+  def index
+    player = Player.all
 
-  	render :json => @player
+    render json: player
   end
 
   def show
-  	@player = Player.find(params[:id])
+    player = Player.find(params[:id])
 
-  	render :json => @player
+    render json: player
   end
 end

@@ -1,13 +1,13 @@
 class Api::V1::TeamsController < ApplicationController
-  def list
-  	@team = Team.all
+  def index
+    team = Team.all
 
-  	render :json => @team
+    render json: team
   end
 
   def show
-  	@team = Team.find(params[:id])
+    team = Team.find(params[:id])
 
-  	render :json => @team
+    render json: team
   end
 end
