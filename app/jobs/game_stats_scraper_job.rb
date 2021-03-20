@@ -37,7 +37,7 @@ class GameStatsScraperJob < ApplicationJob
   end
 
   def perform(*args)
-    for game in Game.all.where(played: true, scraped: false) do
+    for game in Game.all.where(played: true, scraped: [false, nil]) do
       home_team = Team.find_by({id: game.home_team.team_id})
       away_team = Team.find_by({id: game.away_team.team_id})
 
