@@ -4,7 +4,7 @@ class AddRoundMatchNumberToGameJob < ApplicationJob
   def perform(*args)
     for season in Game.all.map(&:season).uniq do
       for round in Game.where(season: season).map(&:round).uniq do
-        games = Game.where(season: season, round: round).order('date ASC')
+        games = Game.where(season: season, round: round).order('kickoff_time ASC')
         games.each_with_index do |game, index|
           game.round_match = index
           game.save!
