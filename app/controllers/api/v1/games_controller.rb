@@ -1,14 +1,14 @@
 class Api::V1::GamesController < ApplicationController
   # /api/v1/games
 	def index
-		game = Game.all.order('date ASC')
+		game = Game.all.order('kickoff_time ASC')
 
 		render json: game
 	end
 
   # /api/v1/games/:season/:round
   def find
-    game = Game.where(round: params[:round], season: params[:season]).order('date ASC')
+    game = Game.where(round: params[:round], season: params[:season]).order('kickoff_time ASC')
 
     render json: game
   end

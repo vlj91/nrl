@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     
       get "/teams" => "teams#index"
       get "/teams/:id" => "teams#show"
+
+      get "/game_events" => "game_events#index"
+      match "/game_events/:id" => "game_events#show"
+      match "/game_events/game/:game_id" => "game_events#find"
     end
   end
 end
