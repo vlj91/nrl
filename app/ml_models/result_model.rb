@@ -67,8 +67,8 @@ class ResultModel < Eps::Base
 
       # features about the match not specific to a team
       'result': game.result,
-      'month': Time.parse(game.date).strftime("%b"),
-      'day': Time.parse(game.date).strftime("%a"),
+      'month': Time.parse(game.kickoff_time).strftime("%b"),
+      'day': Time.parse(game.kickoff_time).strftime("%a"),
       'stadium': game.stadium,
       'city': game.city
     }
