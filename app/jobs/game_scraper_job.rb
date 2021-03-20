@@ -33,7 +33,6 @@ class GameScraperJob < ApplicationJob
           away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
 
           game = Game.find_or_create_by({
-            date: date,
             round: round,
             season: season,
             title: "#{home_team.name}-v-#{away_team.name}",
