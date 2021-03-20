@@ -38,7 +38,8 @@ class GameScraperJob < ApplicationJob
             season: season,
             title: "#{home_team.name}-v-#{away_team.name}",
             stadium: fixture['venue'],
-            city: fixture['venueCity']
+            city: fixture['venueCity'],
+            kickoff_time: fixture['clock']['kickOffTimeLong'].to_datetime.in_time_zone("Sydney")
           })
 
           game_home_team = GameTeam.find_or_create_by({
