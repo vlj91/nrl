@@ -1,5 +1,5 @@
 class Api::V1::GameEventsController < ApplicationController
-  # /api/v1/game_events
+  # /api/v1/game/events
   def index
     event = GameEvent.all
     event = event.where(game_id: params[:game_id]) if params[:game_id]
@@ -10,7 +10,7 @@ class Api::V1::GameEventsController < ApplicationController
     render json: game_event
   end
 
-  # /api/v1/game_events/:id
+  # /api/v1/game/events/:id
   def show
     game_event = GameEvent.find(params[:id])
 
