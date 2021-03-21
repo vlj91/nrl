@@ -1,14 +1,11 @@
 class Api::V1::GameEventsController < ApplicationController
   # /api/v1/game_events
   def index
-    game_event = GameEvent.all
-
-    render json: game_event
-  end
-
-  # /api/v1/game_events/game/:game_id
-  def find
-    game_event = GameEvent.where(game_id: game_id)
+    event = GameEvent.all
+    event = event.where(game_id: params[:game_id]) if params[:game_id]
+    event = event.where(event_type: params[:event_type]) if params[:event_type]
+    event = event.where(team_id: params[:team_id]) if params[:team_id]
+    event = event.where(player_id: params[:player_id]) if params[:player_id]
 
     render json: game_event
   end
