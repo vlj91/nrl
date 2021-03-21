@@ -375,6 +375,19 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
+  def update_total_game_first_tries!(team_id)
+    stat  = TeamStat.find_or_create_by({
+      team_id: team_id,
+      name: 'total_game_first_tries'
+    })
+
+    game_id = GameTeam.where(team_id: team_id).map(&:game_id)
+    game = Game.where(id: game_id).select { |i| i.first_try_team_id == team_id }
+    
+    stat.value = game.length
+    stat.save!
+  end
+
   def update_total!(event_type, team_id, stat_name)
     stat = TeamStat.find_or_create_by({
       team_id: team_id,
@@ -407,6 +420,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_ball_strips_per_game!(team)
       update_avg_professional_fouls_per_game!(team)
       update_avg_conversions_made_per_game!(team)
+      update_total_game_first_tries!(team.id)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
       update_total!('Penalty', team.id, 'total_penalties')
