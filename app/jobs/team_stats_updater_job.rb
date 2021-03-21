@@ -387,7 +387,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       game_events = game.game_events.where(event_type: 'Try')
       next if game_events.length == 0
       first_try_event = game_events.where(event_type: 'Try').order(:game_seconds).first
-      game_first_tries.push(first_try_event.id) if first_try_event.team_id == team_id
+      game_first_tries.push(first_try_event.id) if first_try_event.team_id == team.id
     end
     
     stat.value = game_first_tries.length
