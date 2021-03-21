@@ -386,7 +386,9 @@ class TeamStatsUpdaterJob < ApplicationJob
     games = Game.where(id: game_id)
 
     for game in games do
-      first_try_event = game.game_events.where(event_type: 'Try').order(:game_seconds).first
+      game_events = game.game_events.where(event_type: 'Try')
+      next if game_events.empty?
+      first_try_event = game_events.where(event_type: 'Try').order(:game_seconds).first
       game_first_tries.push(first_try_event.id) if first_try_event.team_id == team_id
     end
     
@@ -405,7 +407,9 @@ class TeamStatsUpdaterJob < ApplicationJob
     games = Game.where(id: game_id)
 
     for game in games do
-      first_try_game_seconds = game.game_events.where(event_type: 'Try', team_id: team_id).order(:game_seconds).first.game_seconds
+      game_events = game.game_events.where(event_type: 'Try', team_id: team_id)
+      next if game_events.empty?
+      first_try_game_seconds = game_events.where(event_type: 'Try', team_id: team_id).order(:game_seconds).first.game_seconds
       first_try_minute = first_try_game_seconds / 60
       game_first_try_minutes.push(first_try_minute)
     end
