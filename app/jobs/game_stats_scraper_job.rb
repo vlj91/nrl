@@ -64,7 +64,7 @@ class GameStatsScraperJob < ApplicationJob
       end
 
       for event in doc['timeline'] do
-        next unless VALID_EVENT_TYPES.include? event['type']
+        next unless valid_event_types.include? event['type']
 
         GameEvent.find_or_create_by({
           event_type: event['type'],

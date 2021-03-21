@@ -19,4 +19,8 @@ class ApplicationJob < ActiveJob::Base
   def current_season
     seasons.max
   end
+
+  def valid_event_types
+    Rails.application.config_for(:nrl)[:valid_event_types]
+  end
 end
