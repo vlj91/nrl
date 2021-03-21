@@ -403,9 +403,9 @@ class TeamStatsUpdaterJob < ApplicationJob
     game_first_try_minutes = []
 
     for game in team.games do
-      game_events = game.game_events.where(event_type: 'Try', team_id: team_id)
+      game_events = game.game_events.where(event_type: 'Try', team_id: team.id)
       next if game_events.length == 0
-      first_try_game_seconds = game_events.where(event_type: 'Try', team_id: team_id).order(:game_seconds).first.game_seconds
+      first_try_game_seconds = game_events.where(event_type: 'Try', team_id: team.id).order(:game_seconds).first.game_seconds
       first_try_minute = first_try_game_seconds / 60
       game_first_try_minutes.push(first_try_minute)
     end
