@@ -1,7 +1,7 @@
 class Api::V1::GamesController < ApplicationController
   # /api/v1/games
 	def index
-    game = Game.all
+    game = Game.all.order('kickoff_time ASC')
     game = game.where(season: params[:season]) if params[:season]
     game = game.where(round: params[:round]) if params[:round]
     game = game.where(title: params[:title]) if params[:title]
