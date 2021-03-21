@@ -4,7 +4,7 @@ class GamePlayedUpdaterJob < ApplicationJob
   def perform(*args)
     updated_games = []
 
-    for game in Game.all
+    for game in Game.where(played: [false, nil])
       # less than or equal to current date isn't strictly reflective
       # of whether the game was played. we know that we'll only run
       # scrape jobs after all games in a current day have finished
