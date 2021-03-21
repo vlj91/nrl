@@ -376,15 +376,41 @@ class TeamStatsUpdaterJob < ApplicationJob
   end
 
   def update_total_game_first_tries!(team_id)
-    stat  = TeamStat.find_or_create_by({
+    stat = TeamStat.find_or_create_by({
       team_id: team_id,
       name: 'total_game_first_tries'
     })
 
+    game_first_tries = []
     game_id = GameTeam.where(team_id: team_id).map(&:game_id)
-    game = Game.where(id: game_id).select { |i| i.first_try_team_id == team_id }
+    game = Game.where(id: game_id)
+
+    for game in games do
+      first_try_event = game.game_events.where(event_type: 'Try').order(:game_seconds).first
+      game_first_tries.push(first_try_event.id) if first_try_event.team_id == team_id
+    end
     
-    stat.value = game.length
+    stat.value = game_first_tries.length
+    stat.save!
+  end
+
+  def update_avg_first_try_minute!(team_id)
+    stat = TeamStat.find_or_create_by({
+      team_id: team_id,
+      name: 'avg_game_first_try_minute'
+    })
+
+    game_first_try_minutes = []
+    game_id = GameTeam.where(team_id: team_id).map(&:game_id)
+    game = Game.where(id: game_id)
+
+    for game in games do
+      first_try_game_seconds = game.game_events.where(event_type: 'Try', team_id: team_id).order(:game_seconds).first.game_seconds
+      first_try_minute = first_try_game_seconds / 60
+      game_first_try_minutes.push(first_try_minute)
+    end
+
+    stat.value = game_first_try_minutes.sum.fdiv(conversions_made.size).round(0)
     stat.save!
   end
 
@@ -420,6 +446,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_avg_ball_strips_per_game!(team)
       update_avg_professional_fouls_per_game!(team)
       update_avg_conversions_made_per_game!(team)
+      update_avg_first_try_minute!(team.id)
       update_total_game_first_tries!(team.id)
       update_total!('Try', team.id, 'total_tries')
       update_total!('Error', team.id, 'total_errors')
