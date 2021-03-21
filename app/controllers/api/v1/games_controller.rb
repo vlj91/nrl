@@ -1,17 +1,15 @@
 class Api::V1::GamesController < ApplicationController
   # /api/v1/games
 	def index
-		game = Game.all
-
-		render json: game
-	end
-
-  # /api/v1/games/:season/:round
-  def find
-    game = Game.where(round: params[:round], season: params[:season])
+    game = Game.all
+    game = game.where(season: params[:season]) if params[:season]
+    game = game.where(round: params[:round]) if params[:round]
+    game = game.where(title: params[:title]) if params[:title]
+    game = game.where(stadium: params[:stadium]) if params[:stadium]
+    game = game.where(city: params[:city]) if params[:city]
 
     render json: game
-  end
+	end
 
   # /api/v1/games/:id
 	def show
