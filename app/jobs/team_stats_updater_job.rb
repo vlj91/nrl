@@ -375,19 +375,17 @@ class TeamStatsUpdaterJob < ApplicationJob
     team_stat.save!
   end
 
-  def update_total_game_first_tries!(team_id)
+  def update_total_game_first_tries!(team)
     stat = TeamStat.find_or_create_by({
-      team_id: team_id,
+      team_id: team.id,
       name: 'total_game_first_tries'
     })
 
     game_first_tries = []
-    game_id = GameTeam.where(team_id: team_id).map(&:game_id)
-    games = Game.where(id: game_id)
 
-    for game in games do
+    for game in team.games do
       game_events = game.game_events.where(event_type: 'Try')
-      next if game_events.empty?
+      next if game_events.length == 0
       first_try_event = game_events.where(event_type: 'Try').order(:game_seconds).first
       game_first_tries.push(first_try_event.id) if first_try_event.team_id == team_id
     end
@@ -396,19 +394,17 @@ class TeamStatsUpdaterJob < ApplicationJob
     stat.save!
   end
 
-  def update_avg_first_try_minute!(team_id)
+  def update_avg_first_try_minute!(team)
     stat = TeamStat.find_or_create_by({
-      team_id: team_id,
+      team_id: team.id,
       name: 'avg_game_first_try_minute'
     })
 
     game_first_try_minutes = []
-    game_id = GameTeam.where(team_id: team_id).map(&:game_id)
-    games = Game.where(id: game_id)
 
-    for game in games do
+    for game in team.games do
       game_events = game.game_events.where(event_type: 'Try', team_id: team_id)
-      next if game_events.empty?
+      next if game_events.length == 0
       first_try_game_seconds = game_events.where(event_type: 'Try', team_id: team_id).order(:game_seconds).first.game_seconds
       first_try_minute = first_try_game_seconds / 60
       game_first_try_minutes.push(first_try_minute)
