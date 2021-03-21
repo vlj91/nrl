@@ -383,7 +383,7 @@ class TeamStatsUpdaterJob < ApplicationJob
 
     game_first_tries = []
     game_id = GameTeam.where(team_id: team_id).map(&:game_id)
-    game = Game.where(id: game_id)
+    games = Game.where(id: game_id)
 
     for game in games do
       first_try_event = game.game_events.where(event_type: 'Try').order(:game_seconds).first
