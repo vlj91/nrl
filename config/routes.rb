@@ -22,9 +22,15 @@ Rails.application.routes.draw do
     
       get "/players" => "players#index"
       get "/players/:id" => "games#show"
+
+      match "/player/stats" => "player_stats#index", :via => [:get]
+      match "/player/stats/:id" => "player_stats#show", :via => [:get]
     
       get "/teams" => "teams#index"
       get "/teams/:id" => "teams#show"
+
+      match "/team/stats" => "team_stats#index", :via => [:get]
+      match "/team/stats/:id" => "team_stats#show", :via => [:get]
     end
   end
 end
