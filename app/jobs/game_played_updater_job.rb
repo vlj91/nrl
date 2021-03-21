@@ -8,7 +8,7 @@ class GamePlayedUpdaterJob < ApplicationJob
       # less than or equal to current date isn't strictly reflective
       # of whether the game was played. we know that we'll only run
       # scrape jobs after all games in a current day have finished
-      if game.kickoff_time.in_time_zone("Sydney") < Date.today
+      if game.kickoff_time.in_time_zone("Sydney") < Time.now
         game.played = true
         updated_games.push(game.id)
       else
