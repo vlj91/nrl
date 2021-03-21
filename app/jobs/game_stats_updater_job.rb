@@ -48,7 +48,7 @@ class GameStatsUpdaterJob < ApplicationJob
   end
 
   def perform(*args)
-    for game in Game.all.where(played: true) do
+    for game in Game.all.where(played: true, scraped: true) do
       update_team_stat!(game, 'home', 'tries', 'Try')
       update_team_stat!(game, 'away', 'tries', 'Try')
       update_team_stat!(game, 'home', 'goals', 'Goal')
