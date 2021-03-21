@@ -18,6 +18,6 @@ class GamePlayedUpdaterJob < ApplicationJob
       game.save!
     end
 
-    logger.info("Updated games to played=true #{updated_games.join(',')}")
+    logger.info("Updated #{updated_games.length} games to played=true #{updated_games.join(',')}")
   end
 end
