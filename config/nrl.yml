@@ -1,0 +1,12 @@
+---
+default: &default
+  competition_id: 111
+  seasons:
+    - 2020
+    - 2021
+
+development: 
+  <<: *default
+
+production:
+  <<: *default

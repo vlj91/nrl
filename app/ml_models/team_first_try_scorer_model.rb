@@ -9,8 +9,8 @@ class TeamFirstTryScorerModel < Eps::Base
       home_team_name: home_team.name,
       away_team_name: away_team.name,
 
-      home_team_total_game_first_tries: home_team.game_first_tries,
-      away_team_total_game_first_tries: away_team.game_first_tries,
+      home_team_game_first_tries: home_team.game_first_tries,
+      away_team_game_first_tries: away_team.game_first_tries,
 
       home_team_home_game_wins: home_team.home_game_wins,
       away_team_home_game_wins: away_team.home_game_wins,

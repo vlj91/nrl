@@ -2,10 +2,9 @@ class GameScraperJob < ApplicationJob
   queue_as :default
 
   NRL_COMP_ID = 111
-  CURRENT_SEASON = 2021
 
   def draw_url(round, season)
-    "https://nrl.com/draw/?competition=#{NRL_COMP_ID}&season=#{season}&round=#{round}"
+    "https://nrl.com/draw/?competition=#{competition_id}&season=#{season}&round=#{round}"
   end
 
   def current_season_played_up_to_finals?(season)
@@ -18,7 +17,7 @@ class GameScraperJob < ApplicationJob
   end
 
   def perform(*args)
-    (2020..2021).each do |season|
+    seasons.each do |season|
       (1..24).each do |round|
         next unless current_season_played_up_to_finals?(season)
         logger.info "Scraping games from round #{round}, season #{season}"
