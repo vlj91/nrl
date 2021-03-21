@@ -42,8 +42,4 @@ class Game < ApplicationRecord
   def away_team_points
     ((away_team_tries.count * 4) + (away_team_goals.count * 2))
   end
-
-  def first_try_team_id
-    event = game_events.where(event_type: 'Try').order(:game_seconds).first.team_id
-  end
 end
