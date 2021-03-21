@@ -410,7 +410,7 @@ class TeamStatsUpdaterJob < ApplicationJob
       game_first_try_minutes.push(first_try_minute)
     end
 
-    stat.value = game_first_try_minutes.sum.fdiv(conversions_made.size).round(0)
+    stat.value = game_first_try_minutes.sum.fdiv(game_first_try_minutes.size).round(0)
     stat.save!
   end
 
