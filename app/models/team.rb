@@ -4,6 +4,10 @@ class Team < ApplicationRecord
   has_many :games, through: :game_teams
   has_many :team_stats
 
+  def game_first_tries
+    team_stats.find_by(name: 'total_game_first_tries').value
+  end
+
   def avg_errors_per_game
     TeamStat.find_by(team_id: self.id, name: 'avg_errors_per_game').value
   end

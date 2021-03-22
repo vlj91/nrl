@@ -1,4 +1,23 @@
 class TeamFirstTryScorerModel < Eps::Base
+  def build
+    games = Game.all.where(played: true, result: ['draw', 'home', 'away'])
+
+    # train
+    data = games.map { |v| features(v) }
+    store = Model.where(key: 'team_first_try_scorer').first_or_initialize
+    model = Eps::Model.new(data, target: :first_team_try_scorer_team_name, split: {validation_size: 0.25})
+    store.update(data: model.to_pmml)
+
+    print model.summary
+
+    # ensure reloads from db
+    @model = nil
+  end
+
+  def predict(game)
+    model.predict(features(game))
+  end
+
   def features(game)
     home_team_game_team = GameTeam.find_by(game_id: game.id, side: 'home')
     away_team_game_team = GameTeam.find_by(game_id: game.id, side: 'away')
@@ -6,6 +25,8 @@ class TeamFirstTryScorerModel < Eps::Base
     away_team = Team.find(away_team_game_team.id)
 
     features = {
+      first_team_try_scorer_team_name: game.team_first_try_scorer_name,
+
       home_team_name: home_team.name,
       away_team_name: away_team.name,
 
@@ -33,14 +54,27 @@ class TeamFirstTryScorerModel < Eps::Base
       city: game.city,
     }
 
-    for stat in TeamStat.where(team_id: home.team_id) do
+    for stat in home_team.team_stats do
       features.merge!({"home_team_#{stat.name}": stat.value})
     end
 
-    for stat in TeamStat.where(team_id: away_team.team_id) do
+    for stat in away_team.team_stats do
       features.merge!({"away_team_#{stat.name}": stat.value})
     end
 
     return features
+  end
+
+  private
+
+  def model
+    @model ||= begin
+        data = Model.find_by({key: 'team_first_try_scorer'}).data
+        Eps::Model.load_pmml(data)
+    end
+  end
+
+  def model_file
+    File.join(__dir__, 'team_first_try_scorer_model.pmml')
   end
 end

@@ -4,23 +4,23 @@ class Game < ApplicationRecord
   has_many :game_stats
 
   def away_team
-    GameTeam.find_by(game_id: self.id, side: 'away')
+    game_teams.find_by(side: 'away')
   end
 
   def home_team
-    GameTeam.find_by(game_id: self.id, side: 'home')
+    game_teams.find_by(side: 'home')
   end
 
   def home_team_events
-    GameEvent.where(game_id: self.id, team_id: home_team.team_id)
+    game_events.where(team_id: home_team.team_id)
   end
 
   def home_team_tries
-    GameEvent.where(game_id: self.id, team_id: home_team.team_id, event_type: 'Try')
+    game_events.where(team_id: home_team.team_id, event_type: 'Try')
   end
 
   def home_team_goals
-    GameEvent.where(game_id: self.id, team_id: home_team.team_id, event_type: 'Goal')
+    game_events.where(team_id: home_team.team_id, event_type: 'Goal')
   end
 
   def home_team_points
@@ -28,18 +28,24 @@ class Game < ApplicationRecord
   end
 
   def away_team_events
-    GameEvent.where(game_id: self.id, team_id: away_team.team_id)
+    game_events.where(team_id: away_team.team_id)
   end
 
   def away_team_tries
-    GameEvent.where(game_id: self.id, team_id: away_team.team_id, event_type: 'Try')
+    game_events.where(team_id: away_team.team_id, event_type: 'Try')
   end
 
   def away_team_goals
-    GameEvent.where(game_id: self.id, team_id: away_team.team_id, event_type: 'Goal')
+    game_events.where(team_id: away_team.team_id, event_type: 'Goal')
   end
 
   def away_team_points
     ((away_team_tries.count * 4) + (away_team_goals.count * 2))
+  end
+
+  def team_first_try_scorer_name
+    result = game_events.where(event_type: 'Try').order(:game_seconds)
+    return nil if result.empty?
+    return Team.find(result.first.team_id).name if result.length >= 1
   end
 end
