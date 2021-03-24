@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       match "/predictions/features" => "predictions#features", :via => [:get]
       match "/predictions/:id" => "predictions#show", :via => [:get]
     
-      get "/games" => "games#index"
+      match "/games" => "games#index", :via => [:get]
       match "/games/:id" => "games#show", :via => [:get]
 
       match "/game/stats" => "game_stats#index", :via => [:get]
@@ -20,13 +20,13 @@ Rails.application.routes.draw do
       match "/game/teams" => "game_teams#index", :via => [:get]
       match "/game/teams/:id" => "game_teams#show", :via => [:get]
     
-      get "/players" => "players#index"
+      match "/players" => "players#index", :via => [:get]
       get "/players/:id" => "games#show"
 
       match "/player/stats" => "player_stats#index", :via => [:get]
       match "/player/stats/:id" => "player_stats#show", :via => [:get]
     
-      get "/teams" => "teams#index"
+      match "/teams" => "teams#index", :via => [:get]
       get "/teams/:id" => "teams#show"
 
       match "/team/stats" => "team_stats#index", :via => [:get]
