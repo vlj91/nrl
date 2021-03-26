@@ -7,6 +7,7 @@ class Api::V1::GamesController < ApplicationController
     game = game.where(title: params[:title]) if params[:title]
     game = game.where(stadium: params[:stadium]) if params[:stadium]
     game = game.where(city: params[:city]) if params[:city]
+    game = game.order(params[:order]) if params[:order]
 
     render json: game
 	end
