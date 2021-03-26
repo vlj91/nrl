@@ -71,6 +71,8 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     lightgbm (0.2.2)
       ffi
     listen (3.3.3)
@@ -164,6 +166,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   eps (~> 0.3.7)
+  jsonapi-serializer (~> 2.2)
   listen (~> 3.2)
   postgresql (~> 1.0)
   puma (~> 4.1)
