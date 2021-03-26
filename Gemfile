@@ -26,5 +26,3 @@ end
 group :production do
   gem 'postgresql', '~> 1.0'
 end
-
-gem "jsonapi-serializer", "~> 2.2"
