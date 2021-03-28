@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       match "/game/teams/:id" => "game_teams#show", :via => [:get]
     
       match "/players" => "players#index", :via => [:get]
-      get "/players/:id" => "games#show"
+      get "/players/:id" => "players#show"
 
       match "/player/stats" => "player_stats#index", :via => [:get]
       match "/player/stats/:id" => "player_stats#show", :via => [:get]
