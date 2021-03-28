@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_26_014010) do
+ActiveRecord::Schema.define(version: 2021_03_28_050121) do
 
   create_table "game_events", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(version: 2021_03_26_014010) do
     t.boolean "played"
     t.datetime "kickoff_time"
     t.boolean "scraped"
+    t.integer "win_margin"
+    t.integer "predicted_win_margin"
   end
 
   create_table "models", force: :cascade do |t|
