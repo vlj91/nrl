@@ -4,6 +4,8 @@ class Api::V1::PlayerStatsController < ApplicationController
     result = PlayerStat.all
     result = result.where(name: params[:name]) if params[:name]
     result = result.where(player_id: params[:player_id]) if params[:player_id]
+    result = result.order(params[:order]) if params[:order]
+    result = result.limit(params[:limit]) if params[:limit]
 
     render json: result
   end
