@@ -1,9 +1,5 @@
 class ResultModel < ApplicationModel
-  def accuracy(season: nil, round: nil)
-    games = Game.all.where(played: true)
-    games = games.where(season: season) if season.present?
-    games = games.where(round: round) if round.present?
-
+  def accuracy(games)
     actual = games.map(&:result)
     predicted = games.map(&:predicted_result)
 
