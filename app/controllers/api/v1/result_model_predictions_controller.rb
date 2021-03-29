@@ -1,10 +1,8 @@
-class Api::V1::PredictionsController < ApplicationController
-  # /api/v1/predictions/features
+class Api::V1::ResultModelPredictionsController < ApplicationController
   def features
     render :json => ResultModel.new.feature_keys
   end
 
-  # /api/v1/predictions/accuracy
   def accuracy
     if params[:season] && params[:round]
       result = ResultModel.new.accuracy(season: params[:season].split(','), round: params[:round].split(','))
@@ -17,14 +15,12 @@ class Api::V1::PredictionsController < ApplicationController
     render :json => {"accuracy_percent": accuracy}
   end
 
-  # /api/v1/predictions/probability/:id
   def probability
     probability = ResultModel.new.probability(Game.find(params[:id]))
 
     render :json => probability
   end
 
-  # /api/v1/predictions/odds/:id
   def odds
     data = ResultModel.new.probability(Game.find(params[:id]))
     data['home'] = 1 / data['home']
@@ -34,7 +30,6 @@ class Api::V1::PredictionsController < ApplicationController
     render :json => data
   end
 
-  # /api/v1/predctions/:id
   def show
   	game = Game.find(params[:id])
 

@@ -12,8 +12,6 @@ Rails.application.routes.draw do
 
         namespace :margin do
           get "/accuracy" => "win_margin_model_predictions#accuracy"
-          get "/probability/:id" => "win_margin_model_predictions#probability"
-          get "/odds/:id" => "win_margin_model_predictions#odds"
           match "/:id" => "win_margin_model_predictions#show", :via => [:get]
         end
       end
