@@ -1,8 +1,9 @@
 class Team < ApplicationRecord
-  has_many :players
   has_many :game_teams
   has_many :games, through: :game_teams
+  has_many :players, through: :game_teams
   has_many :team_stats
+  has_many :game_events
 
   def game_first_tries
     team_stats.find_by(name: 'total_game_first_tries').value

@@ -1,10 +1,12 @@
 class Game < ApplicationRecord
-  has_many :game_teams
   has_many :game_events
   has_many :game_stats
+  has_many :players
+  has_many :game_teams
+  has_many :teams, through: :game_teams
 
   def away_team
-    game_teams.find_by(side: 'away')
+    game_teeams.find_by(side: 'away')
   end
 
   def home_team
