@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+
+      # TODO: make single controller for all predictions
       namespace :predictions do
         namespace :result do
           get "/accuracy" => "result_model_predictions#accuracy"

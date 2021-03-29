@@ -1,4 +1,5 @@
-class Api::V1::ResultModelPredictionsController < ApplicationController
+# TODO: make single controller for all predictions
+class Api::V1::Predictions::Result::ResultModelPredictionsController < ApplicationController
   def features
     render :json => ResultModel.new.feature_keys
   end
