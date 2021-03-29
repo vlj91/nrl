@@ -6,7 +6,7 @@ class Game < ApplicationRecord
   has_many :teams, through: :game_teams
 
   def away_team
-    game_teeams.find_by(side: 'away')
+    game_teams.find_by(side: 'away')
   end
 
   def home_team
