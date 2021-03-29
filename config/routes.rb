@@ -2,12 +2,22 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get "/predictions/accuracy" => "predictions#accuracy"
-      get "/predictions/probability/:id" => "predictions#probability"
-      get "/predictions/odds/:id" => "predictions#odds"
-      match "/predictions/features" => "predictions#features", :via => [:get]
-      match "/predictions/:id" => "predictions#show", :via => [:get]
-    
+      namespace :predictions do
+        namespace :result do
+          get "/accuracy" => "result_model_predictions#accuracy"
+          get "/probability/:id" => "result_model_predictions#probability"
+          get "/odds/:id" => "result_model_predictions#odds"
+          match "/:id" => "result_model_predictions#show", :via => [:get]
+        end
+
+        namespace :margin do
+          get "/accuracy" => "win_margin_model_predictions#accuracy"
+          get "/probability/:id" => "win_margin_model_predictions#probability"
+          get "/odds/:id" => "win_margin_model_predictions#odds"
+          match "/:id" => "win_margin_model_predictions#show", :via => [:get]
+        end
+      end
+      
       match "/games" => "games#index", :via => [:get]
       match "/games/:id" => "games#show", :via => [:get]
 
