@@ -7,7 +7,6 @@ class Api::V1::Predictions::Margin::WinMarginModelPredictionsController < Applic
 
     result = WinMarginModel.new.accuracy(game)
 
-    accuracy = (result[:accuracy] * 100).round(2)
     render :json => accuracy
   end
 
