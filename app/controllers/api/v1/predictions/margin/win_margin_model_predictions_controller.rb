@@ -1,5 +1,5 @@
 # TODO: make single controller for all predictions
-class Api::V1::Predictions::Result::WinMarginModelPredictionsController < ApplicationController
+class Api::V1::Predictions::Margin::WinMarginModelPredictionsController < ApplicationController
   def accuracy
     game = Game.all
     game = game.where(season: params[:season]) if params[:season]
