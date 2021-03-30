@@ -1,8 +1,11 @@
 class ResultModel < ApplicationModel
-  def accuracy(games)
+  def accuracy(season: nil, round: nil)
+    games = Game.where(played: true) # we can't show accuracy for games not played
+    games = games.where(season: season) if season.present?
+    games = games.where(round: round) if round.present?
+
     actual = games.map(&:result)
     predicted = games.map(&:predicted_result)
-
     Eps.metrics(actual, predicted)
   end
 

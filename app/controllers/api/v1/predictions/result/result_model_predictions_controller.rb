@@ -5,17 +5,17 @@ class Api::V1::Predictions::Result::ResultModelPredictionsController < Applicati
   end
 
   def accuracy
-    game = Game.all
-    game = game.where(season: params[:season].split(',')) if params[:season]
-    game = game.where(round: params[:round].split(',')) if params[:round]
-    result = ResultModel.new.accuracy(game)
+    if params[:season] or params[:round]
+      result = ResultModel.new.accuracy({
+        season: params[:season].split(','),
+        round: params[:round].split(',')
+      })
+    else
+      result = ResultModel.new.accuracy
+    end
 
-    accuracy = (result[:accuracy] * 100).round(2)
-
-    render :json => {
-      accuracy_percent: accuracy,
-      game_count: game.count
-    }
+    accuracy = (result[:accuracy] * 100).round(2) # do math things
+    render :json => { "accuracy_percent": accuracy }
   end
 
   def probability
