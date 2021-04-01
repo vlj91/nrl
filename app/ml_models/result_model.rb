@@ -1,4 +1,8 @@
 class ResultModel < ApplicationModel
+  def model_name
+    'result'
+  end
+
   def accuracy(season: nil, round: nil)
     games = Game.where(played: true) # we can't show accuracy for games not played
     games = games.where(season: season) if season.present?

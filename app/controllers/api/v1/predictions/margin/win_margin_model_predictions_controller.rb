@@ -1,11 +1,14 @@
 # TODO: make single controller for all predictions
 class Api::V1::Predictions::Margin::WinMarginModelPredictionsController < ApplicationController
   def accuracy
-    game = Game.all
-    game = game.where(season: params[:season]) if params[:season]
-    game = game.where(round: params[:round]) if params[:round]
-
-    result = WinMarginModel.new.accuracy(game)
+    if params[:season] or params[:round]
+      result = WinMarginModel.new.accuracy({
+        season: params[:season].split(','),
+        round: params[:round].split(',')
+      })
+    else
+      result = WinMarginModel.new.accuracy
+    end
 
     render :json => accuracy
   end

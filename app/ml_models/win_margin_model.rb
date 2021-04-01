@@ -3,7 +3,11 @@ class WinMarginModel < ApplicationModel
     'win_margin'
   end
 
-  def accuracy(games)
+  def accuracy(season: nil, round: nil)
+    games = Game.where(played: true)
+    games = games.where(season: season) if season.present?
+    games = games.where(round: round) if round.present?
+
     actual = games.map(&:win_margin)
     predicted = games.map(&:predicted_win_margin)
 
