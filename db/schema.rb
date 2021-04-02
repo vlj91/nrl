@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_030500) do
+ActiveRecord::Schema.define(version: 2021_04_02_062036) do
 
   create_table "game_events", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_030500) do
   end
 
   create_table "game_stats", force: :cascade do |t|
-    t.bigint "game_id", null: false
-    t.bigint "team_id", null: false
+    t.integer "game_id", null: false
+    t.integer "team_id", null: false
     t.string "name"
     t.integer "value"
     t.datetime "created_at", precision: 6, null: false
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_030500) do
   end
 
   create_table "game_teams", force: :cascade do |t|
-    t.bigint "team_id", null: false
-    t.bigint "game_id", null: false
+    t.integer "team_id", null: false
+    t.integer "game_id", null: false
     t.string "side"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_030500) do
     t.integer "predicted_win_margin"
     t.integer "total_tries"
     t.integer "predicted_total_tries"
+    t.integer "total_points"
+    t.integer "predicted_total_points"
   end
 
   create_table "models", force: :cascade do |t|
@@ -78,7 +80,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_030500) do
   create_table "player_stats", force: :cascade do |t|
     t.string "name"
     t.integer "value"
-    t.bigint "player_id", null: false
+    t.integer "player_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_player_stats_on_player_id"
@@ -97,7 +99,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_030500) do
   create_table "team_stats", force: :cascade do |t|
     t.string "name"
     t.integer "value"
-    t.bigint "team_id", null: false
+    t.integer "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["team_id"], name: "index_team_stats_on_team_id"

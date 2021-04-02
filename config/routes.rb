@@ -15,6 +15,10 @@ Rails.application.routes.draw do
       # TotalTriesModel predictions routes
       get "/predictions/total_tries/accuracy" => "total_tries_model_predictions#accuracy", :via => [:get]
       match "/predictions/total_tries/:id" => "total_tries_model_predictions#show", :via => [:get]
+
+      # TotalPointsModel predictions routes
+      get "/predictions/total_points/accuracy" => "total_points_model_predictions#accuracy", :via => [:get]
+      match "/predictions/total_points/:id" => "total_points_model_predictions#show", :via => [:get]
       
       match "/games" => "games#index", :via => [:get]
       match "/games/:id" => "games#show", :via => [:get]

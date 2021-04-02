@@ -414,6 +414,13 @@ class TeamStatsUpdaterJob < ApplicationJob
     stat.save!
   end
 
+  def update_try_conversion_percent!(team)
+    stat = TeamStat.find_or_create_by({
+      team_id: team.id,
+      name: 'try_conversion_percent'
+    })
+  end
+
   def update_total!(event_type, team_id, stat_name)
     stat = TeamStat.find_or_create_by({
       team_id: team_id,
