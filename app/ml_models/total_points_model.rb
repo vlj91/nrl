@@ -8,8 +8,8 @@ class TotalPointsModel < ApplicationModel
     games = games.where(season: season) if season.present?
     games = games.where(round: round) if round.present?
 
-    actual = games.map(&:result)
-    predicted = games.map(&:predicted_result)
+    actual = games.map(&:total_points)
+    predicted = games.map(&:predicted_total_points)
     Eps.metrics(actual, predicted)
   end
 
@@ -17,7 +17,7 @@ class TotalPointsModel < ApplicationModel
     games = Game.where(played: true)
     data = games.map { |v| features(v) }
     store = Model.where(key: model_name).first_or_initialize
-    model = Eps::Model.new(data, target: :result, split: {validation_size: 0.25})
+    model = Eps::Model.new(data, target: :total_points, split: {validation_size: 0.25})
     store.update(data: model.to_pmml)
     print model.summary
     @model = nil

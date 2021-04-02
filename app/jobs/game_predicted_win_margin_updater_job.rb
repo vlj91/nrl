@@ -2,14 +2,9 @@ class GamePredictedWinMarginUpdaterJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    logger.info "Building WinMargin model"
     WinMarginModel.build
-
-    game = Game.all
-    logger.info "Updating #{game.count} games"
     
-    for game in Game.all do
-      logger.info "Updating game #{game.id} (#{game.title})"
+    for game in Game.where(predicted_win_margin: nil) do
       game.predicted_win_margin = WinMarginModel.predict(game)
       game.save!
     end

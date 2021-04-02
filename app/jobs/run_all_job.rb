@@ -13,7 +13,6 @@ class RunAllJob < ApplicationJob
     PlayerStatsUpdaterJob.perform_now
     TeamStatsUpdaterJob.perform_now
 
-    GamePredictedResultUpdaterJob.perform_now
-    GamePredictedWinMarginUpdaterJob.perform_now
+    GamePredictionsUpdaterJob.perform_now
   end
 end

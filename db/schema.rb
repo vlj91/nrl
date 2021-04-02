@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_062036) do
   end
 
   create_table "game_stats", force: :cascade do |t|
-    t.integer "game_id", null: false
-    t.integer "team_id", null: false
+    t.bigint "game_id", null: false
+    t.bigint "team_id", null: false
     t.string "name"
     t.integer "value"
     t.datetime "created_at", precision: 6, null: false
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 2021_04_02_062036) do
   end
 
   create_table "game_teams", force: :cascade do |t|
-    t.integer "team_id", null: false
-    t.integer "game_id", null: false
+    t.bigint "team_id", null: false
+    t.bigint "game_id", null: false
     t.string "side"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_062036) do
   create_table "player_stats", force: :cascade do |t|
     t.string "name"
     t.integer "value"
-    t.integer "player_id", null: false
+    t.bigint "player_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_player_stats_on_player_id"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_062036) do
   create_table "team_stats", force: :cascade do |t|
     t.string "name"
     t.integer "value"
-    t.integer "team_id", null: false
+    t.bigint "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["team_id"], name: "index_team_stats_on_team_id"
