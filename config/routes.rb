@@ -2,21 +2,19 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      # ResultModel predictions routes
+      get "/predictions/result/accuracy" => "result_model_predictions#accuracy"
+      get "/predictions/result/probability/:id" => "result_model_predictions#probability"
+      get "/predictions/result/odds/:id" => "result_model_predictions#odds"
+      match "/predictions/result/:id" => "result_model_predictions#show", :via => [:get]
 
-      # TODO: make single controller for all predictions
-      namespace :predictions do
-        namespace :result do
-          get "/accuracy" => "result_model_predictions#accuracy"
-          get "/probability/:id" => "result_model_predictions#probability"
-          get "/odds/:id" => "result_model_predictions#odds"
-          match "/:id" => "result_model_predictions#show", :via => [:get]
-        end
+      # WinMarginModel predictions routes
+      get "/predictions/win_margin/accuracy" => "win_margin_model_predictions#accuracy"
+      match "/predictions/win_margin/:id" => "win_margin_model_predictions#show", :via => [:get]
 
-        namespace :margin do
-          get "/accuracy" => "win_margin_model_predictions#accuracy"
-          match "/:id" => "win_margin_model_predictions#show", :via => [:get]
-        end
-      end
+      # TotalTriesModel predictions routes
+      get "/predictions/total_tries/accuracy" => "total_tries_model_predictions#accuracy", :via => [:get]
+      match "/predictions/total_tries/:id" => "total_tries_model_predictions#show", :via => [:get]
       
       match "/games" => "games#index", :via => [:get]
       match "/games/:id" => "games#show", :via => [:get]

@@ -1,5 +1,5 @@
 # TODO: make single controller for all predictions
-class Api::V1::Predictions::Margin::WinMarginModelPredictionsController < ApplicationController
+class Api::V1::WinMarginPredictionsController < ApplicationController
   def accuracy
     if params[:season] or params[:round]
       result = WinMarginModel.new.accuracy({
