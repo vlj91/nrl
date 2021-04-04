@@ -10,5 +10,7 @@ class PostGameJob < ApplicationJob
     TeamStatsUpdaterJob.perform_now
     GamePredictedWinMarginUpdaterJob.perform_now
     GamePredictedResultUpdaterJob.perform_now
+    GamePredictedTotalTriesUpdaterJob.perform_now
+    GamePredictedTotalPointsUpdaterJob.perform_now
   end
 end

@@ -56,5 +56,8 @@ class GameStatsUpdaterJob < ApplicationJob
       update_total_points!(game, 'home')
       update_total_points!(game, 'away')
     end
+
+    GameTotalTriesUpdaterJob.perform_now
+    GameTotalPointsUpdaterJob.perform_now
   end
 end
