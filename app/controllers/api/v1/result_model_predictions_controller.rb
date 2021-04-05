@@ -1,9 +1,5 @@
 # TODO: make single controller for all predictions
 class Api::V1::ResultModelPredictionsController < ApplicationController
-  def features
-    render :json => ResultModel.new.feature_keys
-  end
-
   def accuracy
     if params[:season] or params[:round]
       result = ResultModel.new.accuracy({
