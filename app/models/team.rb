@@ -61,6 +61,7 @@ class Team < ApplicationRecord
 
   def home_game_wins
     home_wins = 0
+
     for i in game_teams.where(side: 'home') do
       home_wins += 1 if i.game.result == 'home'
     end
