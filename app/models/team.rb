@@ -61,11 +61,8 @@ class Team < ApplicationRecord
 
   def home_game_wins
     home_wins = 0
-    gt = GameTeam.where(team_id: self.id, side: 'home')
-
-    for g in gt do
-      game = Game.find(g.game_id)
-      home_wins += 1 if game.result == 'home'
+    for i in game_teams.where(side: 'home') do
+      home_wins += 1 if i.game.result == 'home'
     end
 
     home_wins
@@ -73,11 +70,9 @@ class Team < ApplicationRecord
   
   def away_game_wins
     away_wins = 0
-    gt = GameTeam.where(team_id: self.id, side: 'away')
 
-    for g in gt do
-      game = Game.find(g.game_id)
-      away_wins += 1 if game.result == 'away'
+    for i in game_teams.where(side: 'away') do
+      away_wins += 1 if i.game.result == 'away'
     end
 
     away_wins
@@ -86,11 +81,9 @@ class Team < ApplicationRecord
   # TODO: cleanup
   def wins
     wins = 0
-    gt = GameTeam.where(team_id: self.id)
 
-    for g in gt do
-      game = Game.find(g.game_id)
-      wins += 1 if game.result == g.side
+    for i in game_teams do
+      wins += 1 if i.game.result == i.side
     end
 
     wins
@@ -99,11 +92,9 @@ class Team < ApplicationRecord
   # TODO: cleanup
   def draws
     draws = 0
-    gt = GameTeam.where(team_id: self.id)
 
-    for g in gt do
-      game = Game.find(g.game_id)
-      draws += 1 if game.result == 'draw'
+    for i in game_teams do
+      draws += 1 if i.game.result == 'draw'
     end
 
     wins
@@ -112,12 +103,10 @@ class Team < ApplicationRecord
   # TODO: cleanup
   def losses
     losses = 0
-    gt = GameTeam.where(team_id: self.id)
 
-    for g in gt do
-      opp_side = g.side == 'home' ? 'away' : 'home'
-      game = Game.find(g.game_id)
-      losses += 1 if game.result == opp_side
+    for i in game_teams do
+      opp_side = i.side == 'home' ? 'away' : 'home'
+      losses += 1 if i.game.result == opp_side
     end
 
     losses
