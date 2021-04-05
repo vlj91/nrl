@@ -33,7 +33,6 @@ class ApplicationModel < Eps::Base
 
       # features related to the game, not specific to a team
       'result': game.result,
-      'win_margin': game.win_margin,
       'month': game.kickoff_time.strftime("%b"),
       'day': game.kickoff_time.strftime("%a"),
       'season': game.season,

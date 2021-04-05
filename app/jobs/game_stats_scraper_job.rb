@@ -1,17 +1,7 @@
 class GameStatsScraperJob < ApplicationJob
   queue_as :default
 
-  VALID_EVENT_TYPES = [
-    'Error',
-    'Try',
-    'Goal',
-    'GoalMissed',
-    'FortyTwenty',
-    'KickBomb',
-    'Penalty',
-    'LineBreak',
-    'SinBin'
-  ]
+  VALID_EVENT_TYPES = Rails.application.config_for(:nrl)[:valid_event_types]
 
   def game_url(round, home_team, away_team, season)
     # i'm sure there's a nicer way to do this..
@@ -64,7 +54,7 @@ class GameStatsScraperJob < ApplicationJob
       end
 
       for event in doc['timeline'] do
-        next unless valid_event_types.include? event['type']
+        next unless VALID_EVENT_TYPES.include? event['type']
 
         GameEvent.find_or_create_by({
           event_type: event['type'],

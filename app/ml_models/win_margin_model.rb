@@ -25,6 +25,9 @@ class WinMarginModel < ApplicationModel
   end
 
   def features(game)
-    base_game_features(game)
+    features = base_game_features(game)
+    features.merge({'win_margin': game.win_margin})
+
+    return features
   end
 end
