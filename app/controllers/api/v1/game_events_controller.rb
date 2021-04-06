@@ -6,6 +6,8 @@ class Api::V1::GameEventsController < ApplicationController
     event = event.where(event_type: params[:event_type]) if params[:event_type]
     event = event.where(team_id: params[:team_id]) if params[:team_id]
     event = event.where(player_id: params[:player_id]) if params[:player_id]
+    event = event.order(params[:order]) if params[:order]
+    event = event.limit(params[:limit]) if params[:limit]
 
     render json: game_event
   end
