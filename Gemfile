@@ -29,3 +29,4 @@ group :production do
 end
 
 gem 'bootstrap', '<= 4.1.1'
+gem 'brakeman', '>= 4.5.0', '<= 4.7.0'
