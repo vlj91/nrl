@@ -28,4 +28,4 @@ group :production do
   gem 'postgresql', '~> 1.0'
 end
 
-gem 'bootstrap', '4.1.2'
+gem 'bootstrap', '<= 4.1.1'
