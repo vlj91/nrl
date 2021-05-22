@@ -6,6 +6,7 @@ class Api::V1::GameStatsController < ApplicationController
     stat = stat.where(team_id: params[:game_id]) if params[:team_id]
     stat = stat.where(name: params[:name]) if params[:name]
 
+    resp = { game_stats: stat }
     render json: stat
   end
 

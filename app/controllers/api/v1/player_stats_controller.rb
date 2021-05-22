@@ -7,7 +7,8 @@ class Api::V1::PlayerStatsController < ApplicationController
     result = result.order(params[:order]) if params[:order]
     result = result.limit(params[:limit]) if params[:limit]
 
-    render json: result
+    resp = { player_stats: result }
+    render json: resp
   end
 
   # /api/v1/player/stats/:id

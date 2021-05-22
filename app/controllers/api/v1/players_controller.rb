@@ -6,7 +6,8 @@ class Api::V1::PlayersController < ApplicationController
     player = player.where(last_name: params[:last_name]) if params[:last_name]
     player = player.where(team_id: params[:team_id]) if params[:team_id]
 
-    render json: player
+    resp = { players: player }
+    render json: resp
   end
 
   # /api/v1/players/:id

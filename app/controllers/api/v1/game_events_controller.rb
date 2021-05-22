@@ -9,7 +9,8 @@ class Api::V1::GameEventsController < ApplicationController
     event = event.order(params[:order]) if params[:order]
     event = event.limit(params[:limit]) if params[:limit]
 
-    render json: game_event
+    resp = { game_events: event }
+    render json: resp
   end
 
   # /api/v1/game/events/:id
