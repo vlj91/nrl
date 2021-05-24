@@ -25,8 +25,12 @@ class Game < ApplicationRecord
     game_events.where(team_id: home_team.team_id, event_type: 'Goal')
   end
 
+  def home_team_one_point_field_goals
+    game_events.where(team_id: home_team.team_id, event_type: 'OnePointFieldGoal')
+  end
+
   def home_team_points
-    ((home_team_tries.count * 4) + (home_team_goals.count * 2))
+    ((home_team_tries.count * 4) + (home_team_goals.count * 2) + home_team_one_point_field_goals.count)
   end
 
   def away_team_events
@@ -41,8 +45,12 @@ class Game < ApplicationRecord
     game_events.where(team_id: away_team.team_id, event_type: 'Goal')
   end
 
+  def away_team_one_point_field_goals
+    game_events.where(team_id: away_team.team_id, event_type: 'OnePointFieldGoal')
+  end
+
   def away_team_points
-    ((away_team_tries.count * 4) + (away_team_goals.count * 2))
+    ((away_team_tries.count * 4) + (away_team_goals.count * 2) + away_team_one_point_field_goals.count)
   end
 
   def team_first_try_scorer_name
