@@ -3,8 +3,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.2'
 
-gem 'rails', '~> 6.1', '>= 6.1.3.1'
-gem 'puma', '~> 4.1'
+gem 'rails', '~> 6.1', '>= 6.1.3.2'
+gem 'puma', '~> 4.3'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors'
 gem 'eps', '~> 0.3.7'

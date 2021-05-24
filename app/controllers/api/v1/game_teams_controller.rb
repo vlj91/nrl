@@ -6,6 +6,7 @@ class Api::V1::GameTeamsController < ApplicationController
     result = result.where(game_id: params[:game_id]) if params[:game_id]
     result = result.where(side: params[:side]) if params[:side]
 
+    resp = { game_teams: result }
     render json: result
   end
 

@@ -9,7 +9,8 @@ class Api::V1::GamesController < ApplicationController
     game = game.where(city: params[:city]) if params[:city]
     game = game.order(params[:order]) if params[:order]
 
-    render json: game
+    resp = { games: game }
+    render json: resp
 	end
 
   # /api/v1/games/:id
