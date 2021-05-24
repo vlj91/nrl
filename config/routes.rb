@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-
   namespace :api do
     namespace :v1 do
+      get "/info" => "info#show"
+
       # ResultModel predictions routes
       get "/predictions/result/accuracy" => "result_model_predictions#accuracy"
       get "/predictions/result/probability/:id" => "result_model_predictions#probability"
