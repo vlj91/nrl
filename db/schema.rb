@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_062036) do
+ActiveRecord::Schema.define(version: 2021_05_25_064804) do
 
   create_table "game_events", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_062036) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "nickname"
     t.integer "nrl_id"
+    t.string "badge_url"
   end
 
   add_foreign_key "game_events", "games"
