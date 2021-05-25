@@ -9,6 +9,7 @@ class TeamScraperJob < ApplicationJob
 
     for fixture in doc['fixtures'] do
       for team in ['homeTeam', 'awayTeam'] do
+        puts fixture[team]
         Team.find_or_create_by({
           name: fixture[team]['theme']['key'],
           nickname: fixture[team]['nickName'],

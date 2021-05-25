@@ -3,6 +3,7 @@ class RunAllJob < ApplicationJob
 
   def perform(*args)
     TeamScraperJob.perform_now
+    TeamBadgeUrlJob.perform_later
     PlayerScraperJob.perform_now
     GameScraperJob.perform_now
     GamePlayedUpdaterJob.perform_now
