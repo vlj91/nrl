@@ -434,6 +434,21 @@ class TeamStatsUpdaterJob < ApplicationJob
     stat.save!
   end
 
+  def update_total_points!(team_id)
+    tries = TeamStat.find_by({team_id: team_id, name: 'total_tries'}).value
+    goals = TeamStat.find_by({team_id: team_id, name: 'total_goals'}).value
+    opfg = TeamStat.find_by({team_id: team_id, name: 'total_one_point_field_goals'}).value
+    total_points = ((tries * 4) + (goals * 2) + opfg)
+
+    stat = TeamStat.find_or_create_by({
+      team_id: team_id,
+      name: 'total_points'
+    })
+
+    stat.value = total_points
+    stat.save!
+  end
+
   def perform(*args)
     for team in Team.all do
       update_avg_win_margin!(team)
@@ -463,6 +478,8 @@ class TeamStatsUpdaterJob < ApplicationJob
       update_total!('KickBomb', team.id, 'total_kick_bombs')
       update_total!('FortyTwenty', team.id, 'total_forty_twenties')
       update_total!('SinBin', team.id, 'total_sin_bins')
+      update_total!('OnePointFieldGoal', team.id, 'total_one_point_field_goals')
+      update_total_points!(team.id)
     end
   end
 end
