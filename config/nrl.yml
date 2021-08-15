@@ -2,7 +2,6 @@
 default: &default
   competition_id: 111
   seasons:
-    - 2020
     - 2021
   valid_event_types:
     - Error
