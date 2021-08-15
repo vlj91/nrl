@@ -27,30 +27,37 @@ class GameScraperJob < ApplicationJob
         logger.info "Found #{doc['fixtures'].length} games to scrape"
 
         for fixture in doc['fixtures'] do
-          date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s)
-          home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
-          away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
+          begin
+            date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s)
+            home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
+            away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
 
-          game = Game.find_or_create_by({
-            round: round,
-            season: season,
-            title: "#{home_team.name}-v-#{away_team.name}",
-            stadium: fixture['venue'],
-            city: fixture['venueCity'],
-            kickoff_time: fixture['clock']['kickOffTimeLong'].to_datetime.in_time_zone("Sydney")
-          })
+            game = Game.find_or_create_by({
+              round: round,
+              season: season,
+              title: "#{home_team.name}-v-#{away_team.name}",
+              stadium: fixture['venue'],
+              city: fixture['venueCity'],
+              kickoff_time: fixture['clock']['kickOffTimeLong'].to_datetime.in_time_zone("Sydney")
+            })
 
-          game_home_team = GameTeam.find_or_create_by({
-            game_id: game.id,
-            team_id: home_team.id,
-            side: 'home'
-          })
+            logger.info "Game: #{game.id}"
 
-          game_away_team = GameTeam.find_or_create_by({
-            game_id: game.id,
-            team_id: away_team.id,
-            side: 'away'
-          })
+            game_home_team = GameTeam.find_or_create_by({
+              game_id: game.id,
+              team_id: home_team.id,
+              side: 'home'
+            })
+
+            game_away_team = GameTeam.find_or_create_by({
+              game_id: game.id,
+              team_id: away_team.id,
+              side: 'away'
+            })
+          rescue => e
+            logger.error("An error occurred: #{e}")
+            next
+          end
         end
       end
     end
