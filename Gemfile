@@ -7,7 +7,7 @@ gem 'rails', '~> 6.1', '>= 6.1.3.2'
 gem 'puma', '~> 4.3'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors'
-gem 'eps', '~> 0.3.7'
+gem 'eps', '~> 0.3.8'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
