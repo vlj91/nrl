@@ -14,6 +14,7 @@ default: &default
     - LineBreak
     - SinBin
     - OnePointFieldGoal
+    - TwoPointFieldGoal
 
 development: 
   <<: *default
