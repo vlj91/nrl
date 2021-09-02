@@ -6,9 +6,9 @@ class GameStatsScraperJob < ApplicationJob
   def game_url(round, home_team, away_team, season)
     # i'm sure there's a nicer way to do this..
     case round
-    when 1..24
+    when 1..25
       round_title = "round-#{round}"
-    when 25
+    when 26
       round_title = "grand-final"
     end
 

@@ -18,7 +18,7 @@ class GameScraperJob < ApplicationJob
 
   def perform(*args)
     seasons.each do |season|
-      (1..24).each do |round|
+      (1..25).each do |round|
         next unless current_season_played_up_to_finals?(season)
         logger.info "Scraping games from round #{round}, season #{season}"
 
