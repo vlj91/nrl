@@ -6,15 +6,9 @@ class GameStatsScraperJob < ApplicationJob
   def game_url(round, home_team, away_team, season)
     # i'm sure there's a nicer way to do this..
     case round
-    when 1..20
+    when 1..24
       round_title = "round-#{round}"
-    when 21
-      round_title = "finals-week-1"
-    when 22
-      round_title = "finals-week-2"
-    when 23
-      round_title = "finals-week-3"
-    when 24
+    when 25
       round_title = "grand-final"
     end
 
@@ -33,6 +27,7 @@ class GameStatsScraperJob < ApplicationJob
         away_team = Team.find_by({id: game.away_team.team_id})
 
         url = game_url(game.round, home_team.name, away_team.name, game.season)
+        logger.info "Scraping #{url}"
         doc = page_data(url, "div#vue-match-centre")['match']
 
         for team in ['homeTeam', 'awayTeam'] do
