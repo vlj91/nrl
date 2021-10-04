@@ -8,11 +8,16 @@ class GameStatsScraperJob < ApplicationJob
     case round
     when 1..25
       round_title = "round-#{round}"
-    when 26
+      game_title = "#{home_team}-v-#{away_team}"
+    when 26..28
+      round_title = "finals-week-#{round-25}"
+      game_title = "#{home_team}-v-#{away_team}"
+    when 29
       round_title = "grand-final"
+      game_title = "game-1"
     end
 
-    "https://www.nrl.com/draw/nrl-premiership/#{season}/#{round_title}/#{home_team}-v-#{away_team}/"
+    "https://www.nrl.com/draw/nrl-premiership/#{season}/#{round_title}/#{game_title}/"
   end
 
   def event_team_id(id, home_team, away_team)
