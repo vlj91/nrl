@@ -3,11 +3,12 @@
   <div class="stat place-items-center place-content-center">
     <div class="stat-title">Games</div>
     <div class="stat-value"><%= @games.count %></div>
+    <div class="stat-desc"><%= @games.map(&:season).uniq.count %> seasons tracked</div>
   </div>
 
   <div class="stat place-items-center place-content-center">
     <div class="stat-title">Players</div>
-    <div class="stat-value"><%= @players.count %></div>
+    <div class="stat-value"><%= @players.map(&:nrl_id).uniq.count %></div>
   </div>
 
   <div class="stat place-items-center place-content-center">
@@ -18,20 +19,24 @@
   <div class="stat place-items-center place-content-center">
     <div class="stat-title">Player Stats</div>
     <div class="stat-value"><%= @player_stats.count %></div>
+    <div class="stat-desc"><%= @player_stats.map(&:name).uniq.count %> unique stat types</div>
   </div>
 
   <div class="stat place-items-center place-content-center">
     <div class="stat-title">Team Stats</div>
     <div class="stat-value"><%= @team_stats.count %></div>
+    <div class="stat-desc"><%= @team_stats.map(&:name).uniq.count %> unique stat types</div>
   </div>
 
   <div class="stat place-items-center place-content-center">
     <div class="stat-title">Game Stats</div>
     <div class="stat-value"><%= @game_stats.count %></div>
+    <div class="stat-desc"><%= @game_stats.map(&:name).uniq.count %> unique stat types</div>
   </div>
 
   <div class="stat place-items-center place-content-center">
     <div class="stat-title">Game Events</div>
     <div class="stat-value"><%= @game_events.count %></div>
+    <div class="stat-desc"><%= @game_events.map(&:name).uniq.count %> unique event types</div>
   </div>
 </div>
