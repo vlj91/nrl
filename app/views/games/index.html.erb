@@ -1,0 +1,74 @@
+<%= turbo_stream_from :games %>
+
+<div class="container mx-auto overflow-x-auto mb-10">
+
+  <div class="overflow-x-auto mb-5">
+
+    <select class="select select-sm select-bordered max-w-xs">
+      <option disabled="disabled" selected="selected">Select season</option> 
+      <% @games.map(&:season).uniq.sort.each do |season| %>
+        <option><%= season %></option>
+      <% end %>
+      <option>all</option>
+    </select>
+
+    <select class="select select-sm select-bordered max-w-xs">
+      <option disabled="disabled" selected="selected">Select round</option> 
+      <% @games.map(&:round).uniq.sort.each do |round| %>
+        <option><%= round %></option>
+      <% end %>
+      <option>all</option>
+    </select>
+
+    <select class="select select-sm select-bordered max-w-xs">
+      <option disabled="disabled" selected="selected">Select stadium</option> 
+      <% @games.map(&:stadium).uniq.sort.each do |stadium| %>
+        <option><%= stadium %></option>
+      <% end %>
+      <option>all</option>
+    </select>
+
+    <select class="select select-sm select-bordered max-w-xs">
+      <option disabled="disabled" selected="selected">Select city</option> 
+      <% @games.map(&:city).uniq.sort.each do |city| %>
+        <option><%= city %></option>
+      <% end %>
+      <option>all</option>
+    </select>
+
+  </div>
+
+  <table class="table w-full table-compact">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Result (pred.)</th>
+        <th>Tries (pred.)</th>
+        <th>Points (pred.)</th>
+        <th>Win margin (pred.)</th>
+        <th>Stadium</th>
+        <th>City</th>
+        <th>Season</th>
+        <th>Round</th>
+        <th>Kickoff time</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @games.order(kickoff_time: :desc).each do |game| %>
+        <tr>
+          <td><p class="font-semibold"><%= game.title.gsub!("-", " ") %></p></td>
+          <td><%= game.result %> (<a class="underline decoration-2 underline-offset-2 <%= game.result == game.predicted_result ? "decoration-lime-600" : "decoration-red-600" %>"><%= game.predicted_result %></a>)</td>
+          <td><%= game.total_tries %> (<%= game.predicted_total_tries %>)</td>
+          <td><%= game.total_points %> (<%= game.predicted_total_points %>)</td>
+          <td><%= game.win_margin %> (<%= game.predicted_win_margin %>)</td>
+          <td><%= game.stadium %></td>
+          <td><%= game.city %></td>
+          <td><%= game.season %></td>
+          <td><%= game.round %></td>
+          <td><%= time_ago_in_words(game.kickoff_time) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

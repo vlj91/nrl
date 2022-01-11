@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'player_stats/index'
+  get "games/index"
+  match "/games" => "games#index", :via => [:get]
   root "home#index"
   get "home/index"
   namespace :api do
