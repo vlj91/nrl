@@ -13,7 +13,7 @@ class ApplicationJob < ActiveJob::Base
   end
 
   def seasons
-    Rails.application.config_for(:nrl)[:seasons]
+    Rails.application.config_for(:nrl)[:seasons].map(&:year)
   end
 
   def current_season

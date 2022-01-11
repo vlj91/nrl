@@ -2,7 +2,12 @@
 default: &default
   competition_id: 111
   seasons:
-    - 2021
+    - year: 2021
+      last_regular_games_round: 25
+    - year: 2020
+      last_regular_games_round: 20
+    - year: 2019
+      last_regular_games_round: 25
   valid_event_types:
     - Error
     - Try

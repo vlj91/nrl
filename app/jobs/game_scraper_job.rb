@@ -17,46 +17,43 @@ class GameScraperJob < ApplicationJob
   end
 
   def perform(*args)
-    seasons.each do |season|
-      (1..29).each do |round|
-        next unless current_season_played_up_to_finals?(season)
-        logger.info "Scraping games from round #{round}, season #{season}"
+    Rails.application.config_for(:nrl)[:seasons].each do |s|
+      rounds = s[:last_regular_games_round] + 4
 
-        # load the games for the current round
-        doc = page_data(draw_url(round, season), 'div#vue-draw')
-        logger.info "Found #{doc['fixtures'].length} games to scrape"
+      for round in (1..rounds) do
+        next unless current_season_played_up_to_finals?(s[:year])
+        logger.info "Scraping games from round #{round} of season #{s[:year]}"
+        doc = page_data(draw_url(round, s[:year]), 'div#vue-draw')
+        logger.info "Found #{doc['fixtures'].length} games"
 
         for fixture in doc['fixtures'] do
           begin
-            date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s)
-            home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
-            away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
+           date = Date.parse(Time.parse(fixture['clock']['kickOffTimeLong']).to_s) 
+           home_team = Team.find_by({nickname: fixture['homeTeam']['nickName']})
+           away_team = Team.find_by({nickname: fixture['awayTeam']['nickName']})
 
-            game = Game.find_or_create_by({
-              round: round,
-              season: season,
-              title: "#{home_team.name}-v-#{away_team.name}",
-              stadium: fixture['venue'],
-              city: fixture['venueCity'],
-              kickoff_time: fixture['clock']['kickOffTimeLong'].to_datetime.in_time_zone("Sydney")
-            })
+           game = Game.find_or_create_by({
+             season: s[:year],
+             round: round,
+             title: "#{home_team.name}-v-#{away_team.name}",
+             stadium: fixture['venue'],
+             city: fixture['venueCity'],
+             kickoff_time: fixture['clock']['kickOffTimeLong'].to_datetime.in_time_zone("Australia/Sydney")
+           })
 
-            logger.info "Game: #{game.id}"
+          GameTeam.find_or_create_by({
+            game_id: game.id,
+            team_id: home_team.id,
+            side: 'home'
+          })
 
-            game_home_team = GameTeam.find_or_create_by({
-              game_id: game.id,
-              team_id: home_team.id,
-              side: 'home'
-            })
-
-            game_away_team = GameTeam.find_or_create_by({
-              game_id: game.id,
-              team_id: away_team.id,
-              side: 'away'
-            })
-          rescue => e
-            logger.error("An error occurred: #{e}")
-            next
+          GameTeam.find_or_create_by({
+            game_id: game.id,
+            team_id: away_team.id,
+            side: 'away'
+          })
+          rescue => exception
+            logger.error "An error occurred while scraping game #{game.title}: #{exception.message}" 
           end
         end
       end
