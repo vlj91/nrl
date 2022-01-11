@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root "home#index"
+  get "home/index"
   namespace :api do
     namespace :v1 do
       get "/info" => "info#show"
