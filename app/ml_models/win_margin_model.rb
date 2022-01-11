@@ -4,7 +4,7 @@ class WinMarginModel < ApplicationModel
   end
 
   def accuracy(season: nil, round: nil)
-    games = Game.where(played: true).load_async
+    games = Game.where(played: true)
     games = games.where(season: season) if season.present?
     games = games.where(round: round) if round.present?
 
@@ -15,7 +15,7 @@ class WinMarginModel < ApplicationModel
   end
 
   def build
-    game = Game.where(played: true).load_async
+    game = Game.where(played: true)
     data = game.map { |v| features(v) }
     store = Model.where(key: 'win_margin').first_or_initialize
     model = Eps::Model.new(data, target: :win_margin, split: {validation_size: 0.25})

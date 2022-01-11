@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.all.load_async
+    @games = Game.all
   end
 
   def show

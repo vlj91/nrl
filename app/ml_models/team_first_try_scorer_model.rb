@@ -19,10 +19,10 @@ class TeamFirstTryScorerModel < Eps::Base
   end
 
   def features(game)
-    home_team_game_team = GameTeam.find_by(game_id: game.id, side: 'home').load_async
-    away_team_game_team = GameTeam.find_by(game_id: game.id, side: 'away').load_async
-    home_team = Team.find(home_team_game_team.id).load_async
-    away_team = Team.find(away_team_game_team.id).load_async
+    home_team_game_team = GameTeam.find_by(game_id: game.id, side: 'home')
+    away_team_game_team = GameTeam.find_by(game_id: game.id, side: 'away')
+    home_team = Team.find(home_team_game_team.id)
+    away_team = Team.find(away_team_game_team.id)
 
     features = {
       first_team_try_scorer_team_name: game.team_first_try_scorer_name,

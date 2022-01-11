@@ -4,7 +4,7 @@ class TotalTriesModel < ApplicationModel
   end
 
   def accuracy(season: nil, round: nil)
-    games = Game.where(played: true).load_async
+    games = Game.where(played: true)
     games = game.where(season: season) if season.present?
     games = game.where(round: round) if round.present?
 
@@ -14,7 +14,7 @@ class TotalTriesModel < ApplicationModel
   end
 
   def build
-    games = Game.where(played: true).load_async
+    games = Game.where(played: true)
     data = games.map { |v| features(v) }
     store = Model.where(key: model_name).first_or_initialize
     model = Eps::Model.new(data, target: :total_tries, split: {validation_size: 0.25})

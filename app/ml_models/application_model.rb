@@ -11,7 +11,7 @@ class ApplicationModel < Eps::Base
   # a set of basic features that can be used for a
   # model that predicts on Game
   def base_game_features(game)
-    game_teams = GameTeam.where(game_id: game.id).load_async
+    game_teams = GameTeam.where(game_id: game.id)
     game_team_home = game_teams.find_by(side: 'home')
     game_team_away = game_teams.find_by(side: 'away')
 
