@@ -58,4 +58,8 @@ class Game < ApplicationRecord
     return nil if result.empty?
     return Team.find(result.first.team_id).name if result.length >= 1
   end
+
+  def finals_round?
+    self.round > Rails.application.config_for(:nrl)[:seasons].select {|x| x[:year] == self.season }.first[:last_regular_games_round]
+  end
 end
