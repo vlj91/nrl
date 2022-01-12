@@ -5,6 +5,19 @@ class Team < ApplicationRecord
   has_many :team_stats
   has_many :game_events
 
+  after_create_commit { 
+    broadcast_prepend_to "teams"
+  }
+
+  after_update_commit {
+    broadcast_replace_to "teams"
+  }
+
+  after_destroy_commit { 
+    broadcast_remove_to "teams"
+  }
+
+
   def game_first_tries
     team_stats.find_by(name: 'total_game_first_tries').value
   end
