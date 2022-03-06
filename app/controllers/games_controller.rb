@@ -1,12 +1,15 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.all
-    @game = Game.new
-  end
+    @games = Game.all.order(kickoff_time: :desc)
+    @games = @games.where(season: params[:season]) if params[:season].present?
 
-  def list
-    @games = Game.all
-    @games = @games.where(season: params[:season]) if params[:sesason].present?
+    respond_to do |format|
+      format.json { render json: @games }
+
+      format.csv do
+        send_data @games.to_csv, filename: "games.csv"
+      end
+    end
   end
 
   def show
