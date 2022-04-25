@@ -5,18 +5,6 @@ class Game < ApplicationRecord
   has_many :game_teams
   has_many :teams, through: :game_teams
 
-  after_create_commit { 
-    broadcast_prepend_to "games", partial: "games/game", locals: { game: self }
-  }
-
-  after_update_commit { 
-    broadcast_replace_to "games", partial: "games/game", locals: { game: self }
-  }
-
-  after_destroy_commit { 
-    broadcast_remove_to "games", partial: "games/game", locals: { game: self }
-  }
-
   def away_team
     game_teams.find_by(side: 'away')
   end

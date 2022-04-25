@@ -2,18 +2,6 @@ class Player < ApplicationRecord
   has_many :game_events
   has_many :player_stats
 
-  after_create_commit { 
-    broadcast_prepend_to "players"
-  }
-
-  after_update_commit {
-    broadcast_replace_to "players"
-  }
-
-  after_destroy_commit { 
-    broadcast_remove_to "players"
-  }
-
   def tries
     game_events.where(event_type: 'Try')
   end
