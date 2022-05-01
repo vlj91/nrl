@@ -1,0 +1,15 @@
+<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
+  <div class="px-2 mx-2 navbar-start">
+    <span class="text-lg font-bold">
+            nrl stats
+          </span>
+  </div> 
+  <div class="navbar-end hidden px-2 mx-2 navbar-center lg:flex">
+    <div class="flex items-stretch">
+      <%= link_to 'Home', root_path, :class => "btn btn-ghost btn-sm rounded-btn" %>
+      <%= link_to 'Games', games_path, :class => "btn btn-ghost btn-sm rounded-btn" %>
+      <%= link_to 'Teams', teams_path, :class => "btn btn-ghost btn-sm rounded-btn" %>
+      <%= link_to 'Players', players_path, :class => "btn btn-ghost btn-sm rounded-btn" %>
+    </div>
+  </div> 
+</div>

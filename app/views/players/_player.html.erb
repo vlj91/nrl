@@ -1,0 +1,9 @@
+<%= turbo_stream_from @player %>
+
+<%= turbo_frame_tag @player do %>
+  <div class="card shadow-lg">
+    <div class="card-body">
+      <h2 class="card-title"><%= player.first_name %> <%= player.last_name %></h2>
+    </div>
+  </div>
+<% end %>
