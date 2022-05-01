@@ -55,17 +55,20 @@ class GameStatsScraperJob < ApplicationJob
         end
 
         for event in doc['timeline'] do
-          next unless VALID_EVENT_TYPES.include? event['type']
-
-          GameEvent.find_or_create_by({
-            event_type: event['type'],
-            name: event['title'],
-            game_id: game.id,
-            player_id: Player.find_by(nrl_id: event['playerId']).id,
-            team_id: Team.find_by(nrl_id: event['teamId']).id,
-            description: event['description'],
-            game_seconds: event['gameSeconds']
-          })
+          if VALID_EVENT_TYPES.include? event['type']
+            GameEvent.find_or_create_by({
+              event_type: event['type'],
+              name: event['title'],
+              game_id: game.id,
+              player_id: Player.find_by(nrl_id: event['playerId']).id,
+              team_id: Team.find_by(nrl_id: event['teamId']).id,
+              description: event['description'],
+              game_seconds: event['gameSeconds']
+            })
+          else
+            Rails.logger.warn "Unhandled event type: #{event['type']}"
+            next
+          end
         end
 
         game.scraped = true
