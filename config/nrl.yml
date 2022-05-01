@@ -22,6 +22,12 @@ default: &default
     - SinBin
     - OnePointFieldGoal
     - TwoPointFieldGoal
+    - SetRestart
+    - LineDropout
+    - OnePointFieldGoalMissed
+    - TwoPointFieldGoalMissed
+    - RuckInfringement
+    - OffsideWithinTenMetres
 
 development: 
   <<: *default

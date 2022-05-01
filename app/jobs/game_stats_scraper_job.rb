@@ -67,6 +67,7 @@ class GameStatsScraperJob < ApplicationJob
             })
           else
             Rails.logger.warn "Unhandled event type: #{event['type']}"
+            Rails.logger.debug "#{event['type']}: #{event.inspect}"
             next
           end
         end
