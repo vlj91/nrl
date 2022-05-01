@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_25_064804) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_05_25_064804) do
   create_table "game_events", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "event_type"
     t.string "name"
     t.integer "game_id", null: false
@@ -32,8 +31,8 @@ ActiveRecord::Schema.define(version: 2021_05_25_064804) do
     t.integer "team_id", null: false
     t.string "name"
     t.integer "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_game_stats_on_game_id"
     t.index ["team_id"], name: "index_game_stats_on_team_id"
   end
@@ -42,15 +41,15 @@ ActiveRecord::Schema.define(version: 2021_05_25_064804) do
     t.integer "team_id", null: false
     t.integer "game_id", null: false
     t.string "side"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_game_teams_on_game_id"
     t.index ["team_id"], name: "index_game_teams_on_team_id"
   end
 
   create_table "games", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "round"
     t.string "title"
     t.string "result"
@@ -59,7 +58,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_064804) do
     t.string "city"
     t.integer "season"
     t.boolean "played"
-    t.datetime "kickoff_time"
+    t.datetime "kickoff_time", precision: nil
     t.boolean "scraped"
     t.integer "win_margin"
     t.integer "predicted_win_margin"
@@ -72,8 +71,8 @@ ActiveRecord::Schema.define(version: 2021_05_25_064804) do
   create_table "models", force: :cascade do |t|
     t.string "key"
     t.text "data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["key"], name: "index_models_on_key", unique: true
   end
 
@@ -81,16 +80,16 @@ ActiveRecord::Schema.define(version: 2021_05_25_064804) do
     t.string "name"
     t.integer "value"
     t.integer "player_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_player_stats_on_player_id"
   end
 
   create_table "players", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "team_id", null: false
     t.integer "nrl_id"
     t.index ["team_id"], name: "index_players_on_team_id"
@@ -100,15 +99,15 @@ ActiveRecord::Schema.define(version: 2021_05_25_064804) do
     t.string "name"
     t.integer "value"
     t.integer "team_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_team_stats_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "nickname"
     t.integer "nrl_id"
     t.string "badge_url"
