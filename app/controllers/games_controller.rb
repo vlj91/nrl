@@ -4,13 +4,7 @@ class GamesController < ApplicationController
     @games = @games.where(season: params[:season]) if params[:season]
     @games = @games.where(round: params[:round]) if params[:round]
 
-    respond_to do |format|
-      format.json { render json: @games }
-
-      format.csv do
-        send_data @games.to_csv, filename: "games.csv"
-      end
-    end
+    render json: @games
   end
 
   def show
