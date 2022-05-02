@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :players
-  resources :games
-  resources :teams
+  defaults format: :json do
+    resources :games
+    resources :teams
+  end
 end
