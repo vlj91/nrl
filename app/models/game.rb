@@ -62,14 +62,4 @@ class Game < ApplicationRecord
   def finals_round?
     self.round > Rails.application.config_for(:nrl)[:seasons].select {|x| x[:year] == self.season }.first[:last_regular_games_round]
   end
-
-  def self.to_csv
-    attributes = %w{id season round kickoff_time title result city stadium win_margin total_tries total_points}
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
-      all.each do |game|
-        csv << attributes.map{ |attr| game.send(attr) }
-      end
-    end
-  end
 end
