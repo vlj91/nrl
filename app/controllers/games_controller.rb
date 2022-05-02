@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.all.order(kickoff_time: :desc)
+    @games = Game.all.order(kickoff_time: :asc)
     @games = @games.where(season: params[:season]) if params[:season]
     @games = @games.where(round: params[:round]) if params[:round]
   end
