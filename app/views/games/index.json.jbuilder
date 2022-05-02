@@ -14,8 +14,10 @@ json.array! @games do |game|
   json.win_margin game.win_margin
   json.total_tries game.total_tries
   json.total_points game.total_points
+  json.result game.result
 
   # predictions
+  json.predicted_result game.predicted_result
   json.predicted_win_margin game.predicted_win_margin
   json.predicted_total_tries game.predicted_total_tries
   json.predicted_total_points game.predicted_total_points
