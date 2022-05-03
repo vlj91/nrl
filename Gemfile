@@ -10,4 +10,11 @@ gem "jbuilder"
 gem "redis", "~> 4.0"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
-gem "sqlite3", "~> 1.4"
+
+group :development do
+  gem "sqlite3", "~> 1.4"
+end
+
+group :production do
+  gem "pg"
+end
