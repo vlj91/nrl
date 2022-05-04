@@ -4,5 +4,6 @@ Rails.application.routes.draw do
     resources :teams
 
     get 'stats', to: 'stats#index'
+    get 'tips/:season/:round', to: 'tips#index'
   end
 end
