@@ -23,4 +23,8 @@ class ApplicationJob < ActiveJob::Base
   def valid_event_types
     Rails.application.config_for(:nrl)[:valid_event_types]
   end
+
+  def valid_game_stat_types
+    Rails.application.config_for(:nrl)[:valid_game_stat_types]
+  end
 end

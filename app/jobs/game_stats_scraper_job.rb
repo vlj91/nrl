@@ -1,8 +1,6 @@
 class GameStatsScraperJob < ApplicationJob
   queue_as :default
 
-  VALID_EVENT_TYPES = Rails.application.config_for(:nrl)[:valid_event_types]
-
   def game_url(round, home_team, away_team, season)
     # i'm sure there's a nicer way to do this..
     case round
@@ -55,7 +53,7 @@ class GameStatsScraperJob < ApplicationJob
         end
 
         for event in doc['timeline'] do
-          if VALID_EVENT_TYPES.include? event['type']
+          if valid_event_types.include? event['type']
             GameEvent.find_or_create_by({
               event_type: event['type'],
               name: event['title'],
@@ -69,6 +67,25 @@ class GameStatsScraperJob < ApplicationJob
             Rails.logger.warn "Unhandled event type: #{event['type']}"
             Rails.logger.debug "#{event['type']}: #{event.inspect}"
             next
+          end
+        end
+
+        for group in doc['stats']['groups'] do
+          for stat in group['stats'] do
+            if valid_game_stat_types.pluck(:name).include? stat['title']
+              for team in ['home', 'away'] do
+                team_id = team == 'home' ? home_team.id : away_team.id
+                GameStat.find_or_create_by({
+                  name: valid_game_stat_types.find { |s| s.name == stat['title'] }.id,
+                  value: stat["#{team}Value"]['value'],
+                  game_id: game.id,
+                  team_id: team_id
+                })
+              end
+            else
+              Rails.logger.warn "Unhandled game stat type: #{stat['title']}"
+              Rails.logger.debug "Valid game stats: #{valid_game_stat_types.pluck(:name)}"
+            end
           end
         end
 
