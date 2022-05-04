@@ -75,12 +75,14 @@ class GameStatsScraperJob < ApplicationJob
             if valid_game_stat_types.pluck(:name).include? stat['title']
               for team in ['home', 'away'] do
                 team_id = team == 'home' ? home_team.id : away_team.id
-                GameStat.find_or_create_by({
-                  name: valid_game_stat_types.find { |s| s.name == stat['title'] }.id,
+                stat = GameStat.find_or_create_by({
+                  name: valid_game_stat_types.find { |s| s[:name] == stat['title'] }[:id],
                   value: stat["#{team}Value"]['value'],
                   game_id: game.id,
                   team_id: team_id
                 })
+
+                Rails.logger.info "Created GameStat #{stat.id}"
               end
             else
               Rails.logger.warn "Unhandled game stat type: #{stat['title']}"
