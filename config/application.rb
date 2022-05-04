@@ -38,5 +38,8 @@ module Nrl
 
     # Disable sqlite warnings
     config.active_record.sqlite3_production_warning = false
+
+    # allow use of .load_async
+    config.active_record.async_query_executor = :multi_thread_pool
   end
 end
