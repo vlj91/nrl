@@ -65,7 +65,6 @@ class GameStatsScraperJob < ApplicationJob
             })
           else
             Rails.logger.warn "Unhandled event type: #{event['type']}"
-            Rails.logger.debug "#{event['type']}: #{event.inspect}"
             next
           end
         end
@@ -81,12 +80,9 @@ class GameStatsScraperJob < ApplicationJob
                   game_id: game.id,
                   team_id: team_id
                 })
-
-                Rails.logger.info "Created GameStat #{stat.id}"
               end
             else
               Rails.logger.warn "Unhandled game stat type: #{stat['title']}"
-              Rails.logger.debug "Valid game stats: #{valid_game_stat_types.pluck(:name)}"
             end
           end
         end
