@@ -53,7 +53,7 @@ class GameScraperJob < ApplicationJob
             side: 'away'
           })
           rescue => exception
-            logger.error "An error occurred while scraping game #{game.title}: #{exception.message}" 
+            logger.error "An error occurred while scraping a game: #{exception.message}"
           end
         end
       end
