@@ -18,3 +18,5 @@ end
 group :production do
   gem "pg"
 end
+
+gem "matrix", "~> 0.4.2"
