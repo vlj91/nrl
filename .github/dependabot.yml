@@ -5,8 +5,12 @@ updates:
     schedule:
       interval: "daily"
       timezone: "Australia/Sydney"
+    commit-message:
+      prefix: "[gem]"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "daily"
       timezone: "Australia/Sydney"
+    commit-message:
+      prefix: "[docker]"
