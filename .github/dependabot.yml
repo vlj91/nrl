@@ -7,6 +7,10 @@ updates:
       timezone: "Australia/Sydney"
     commit-message:
       prefix: "[gem]"
+    labels:
+      - "gem"
+      - "dependencies"
+      - "dependabot-gem"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -14,3 +18,7 @@ updates:
       timezone: "Australia/Sydney"
     commit-message:
       prefix: "[docker]"
+    labels:
+      - "docker"
+      - "dependencies"
+      - "dependabot-docker"
