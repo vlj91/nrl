@@ -12,7 +12,7 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 group :development do
-  gem "sqlite3", "~> 1.4"
+  gem "sqlite3", "~> 1.5"
 end
 
 group :production do
