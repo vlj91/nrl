@@ -3,6 +3,8 @@ registries:
   ghcr:
     type: docker-registry
     url: https://ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.GITHUB_TOKEN }}
 updates:
   - package-ecosystem: "bundler"
     directory: "/"
