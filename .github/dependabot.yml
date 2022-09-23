@@ -1,10 +1,4 @@
 version: 2
-registries:
-  ghcr:
-    type: docker-registry
-    url: https://ghcr.io
-    username: ${{ github.actor }}
-    password: ${{ secrets.GITHUB_TOKEN }}
 updates:
   - package-ecosystem: "bundler"
     directory: "/"
@@ -12,7 +6,5 @@ updates:
       interval: "daily"
   - package-ecosystem: "docker"
     directory: "/"
-    registries:
-      - ghcr
     schedule:
       interval: "daily"
