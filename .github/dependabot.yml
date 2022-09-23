@@ -1,9 +1,15 @@
 version: 2
+registries:
+  ghcr:
+    type: docker-registry
+    url: https://ghcr.io
 updates:
   - package-ecosystem: "bundler"
     directory: "/"
     schedule:
       interval: "daily"
   - package-ecosystem: "docker"
+    registries:
+      - ghcr
     schedule:
       interval: "daily"
