@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: games
+#
+#  id                     :integer          not null, primary key
+#  city                   :string
+#  kickoff_time           :datetime
+#  played                 :boolean
+#  predicted_result       :string
+#  predicted_total_points :integer
+#  predicted_total_tries  :integer
+#  predicted_win_margin   :integer
+#  result                 :string
+#  round                  :integer
+#  scraped                :boolean
+#  season                 :integer
+#  stadium                :string
+#  title                  :string
+#  total_points           :integer
+#  total_tries            :integer
+#  win_margin             :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
 class Game < ApplicationRecord
   has_many :game_events
   has_many :game_stats

@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: players
+#
+#  id         :integer          not null, primary key
+#  first_name :string
+#  last_name  :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  nrl_id     :integer
+#  team_id    :integer          not null
+#
+# Indexes
+#
+#  index_players_on_team_id  (team_id)
+#
+# Foreign Keys
+#
+#  team_id  (team_id => teams.id)
+#
 class Player < ApplicationRecord
   has_many :game_events
   has_many :player_stats

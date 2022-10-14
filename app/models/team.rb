@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: teams
+#
+#  id         :integer          not null, primary key
+#  badge_url  :string
+#  name       :string
+#  nickname   :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  nrl_id     :integer
+#
 class Team < ApplicationRecord
   has_many :game_teams
   has_many :games, through: :game_teams
