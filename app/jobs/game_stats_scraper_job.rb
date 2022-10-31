@@ -19,8 +19,7 @@ class GameStatsScraperJob < ApplicationJob
   end
 
   def event_team_id(id, home_team, away_team)
-    return home_team.id if home_team.nrl_id == id
-    return away_team.id if away_team.nrl_id == id
+    home_team.nrl_id == id ? home_team.id : away_team.id
   end
 
   def perform(*args)
@@ -30,7 +29,6 @@ class GameStatsScraperJob < ApplicationJob
         away_team = Team.find_by({id: game.away_team.team_id})
 
         url = game_url(game.round, home_team.name, away_team.name, game.season)
-        logger.info "Scraping #{url}"
         doc = page_data(url, "div#vue-match-centre")['match']
 
         for team in ['homeTeam', 'awayTeam'] do
@@ -74,15 +72,13 @@ class GameStatsScraperJob < ApplicationJob
             if valid_game_stat_types.pluck(:name).include? stat['title']
               for team in ['home', 'away'] do
                 team_id = team == 'home' ? home_team.id : away_team.id
-                stat = GameStat.find_or_create_by({
+                GameStat.find_or_create_by({
                   name: valid_game_stat_types.find { |s| s[:name] == stat['title'] }[:id],
                   value: stat["#{team}Value"]['value'],
                   game_id: game.id,
                   team_id: team_id
                 })
               end
-            else
-              Rails.logger.warn "Unhandled game stat type: #{stat['title']}"
             end
           end
         end

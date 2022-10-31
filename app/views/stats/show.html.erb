@@ -1,0 +1,32 @@
+<div>
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th>Team</th>
+        <th>Number of tries</th>
+        <th>Total errors</th>
+        <th>Total penalties</th>
+        <th>Total line breaks</th>
+        <th>Avg. errors per game</th>
+        <th>Avg. tries per game</th>
+        <th>Avg. win margin</th>
+        <th>Avg. loss margin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Team.all.order(:total_tries).each do |team| %>
+      <tr>
+        <td><%= team.name %></td>
+        <td><%= team.total_tries %></td>
+        <td><%= team.total_errors %></td>
+        <td><%= team.total_penalties %></td>
+        <td><%= team.total_line_breaks %></td>
+        <td><%= team.avg_errors_per_game %></td>
+        <td><%= team.avg_tries_per_game %></td>
+        <td><%= team.avg_win_margin %></td>
+        <td><%= team.avg_loss_margin %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

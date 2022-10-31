@@ -4,7 +4,7 @@ class TeamScraperJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    page_url = "https://www.nrl.com/draw/"
+    page_url = "https://www.nrl.com/draw/?competition_id=#{competition_id}&round=1"
     doc = page_data(page_url, "div#vue-draw")
 
     for fixture in doc['fixtures'] do

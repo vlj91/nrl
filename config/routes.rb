@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  defaults format: :json do
-    resources :games
-    resources :teams
+  get 'stats/show'
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-    get 'stats', to: 'stats#index'
-    get 'tips/:season/:round', to: 'tips#index'
-  end
+  # Defines the root path route ("/")
+  # root "articles#index"
 end
