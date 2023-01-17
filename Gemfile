@@ -12,7 +12,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "jbuilder"
-gem "redis", "~> 4.0"
+gem "redis", "~> 5.0"
 gem "bootsnap", require: false
 
 group :development, :test do
