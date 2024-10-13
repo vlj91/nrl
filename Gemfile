@@ -35,4 +35,4 @@ end
 
 gem "chartkick", "~> 4.2"
 
-gem "eps", "~> 0.4.1"
+gem "eps", "~> 0.5"
