@@ -5,7 +5,7 @@ ruby "3.3.4"
 
 gem "rails", "~> 7.2"
 gem "sprockets-rails"
-gem "pg", "~> 1.1"
+gem "sqlite3", ">= 1.4"
 gem "puma", "~> 6.4"
 gem "importmap-rails"
 gem "turbo-rails"
