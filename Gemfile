@@ -5,7 +5,7 @@ ruby "3.3.4"
 
 gem "rails", "~> 8.0.0beta1"
 gem "sprockets-rails"
-gem "sqlite3", ">= 1.4"
+gem "sqlite3", ">= 2.1"
 gem "puma", "~> 6.4"
 gem "importmap-rails"
 gem "turbo-rails"
@@ -36,3 +36,5 @@ end
 gem "chartkick", "~> 4.2"
 
 gem "eps", "~> 0.5"
+
+gem "solid_queue", "~> 1.0"
